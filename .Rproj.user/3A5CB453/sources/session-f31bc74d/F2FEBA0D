@@ -3,7 +3,7 @@
     "path": "G:/Mi unidad/Teaching/Metodología Cuantitativa II 2024/Sesión 1/Taller 1.qmd",
     "project_path": "Sesión 1/Taller 1.qmd",
     "type": "quarto_markdown",
-    "hash": "4055930598",
+    "hash": "0",
     "contents": "",
     "dirty": false,
     "created": 1721906268631.0,
@@ -12,20 +12,20 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "308,239",
-        "scrollLine": "275",
+        "cursorPosition": "495,88",
+        "scrollLine": "476",
         "rmdVisualMode": "false",
         "rmdVisualWrapConfigured": "true",
         "docOutlineVisible": "1",
         "rmdVisualCollapsedChunks": "",
-        "rmdVisualModeLocation": "10654:5770"
+        "rmdVisualModeLocation": "14352:7330"
     },
     "folds": "",
-    "lastKnownWriteTime": 1721919232,
+    "lastKnownWriteTime": 1721926457,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1721919232872,
+    "last_content_update": 1721926457513,
     "read_only": false,
     "read_only_alternatives": []
 }

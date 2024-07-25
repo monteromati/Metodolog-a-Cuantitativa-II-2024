@@ -1,0 +1,4 @@
+"0","edad <- c(40, 5, 16, 28, 32)"
+"0","nombre <- c(""Daniel"", ""Mariela"", ""Miguel"", ""Pablo"", ""Javiera"")"
+"0","misdatos <- data.frame(nombre, edad)"
+"0","misdatos"

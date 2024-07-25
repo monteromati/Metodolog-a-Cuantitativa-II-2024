@@ -1,0 +1,8 @@
+"0","class(personal_2021)    # Muestra la clase de objeto de personal_2021"
+"1","[1]"
+"1"," ""tbl_df""    "
+"1"," ""tbl""       "
+"1"," ""data.frame"""
+"1","
+"
+"0","head(personal_2021)     # Muestra los primeros 6 casos en la base de datos"

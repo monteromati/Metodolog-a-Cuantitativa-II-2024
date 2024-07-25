@@ -1,0 +1,5 @@
+"0","personal_2021$tipo_ies_n <- factor(personal_2021$tipo_ies,"
+"0","                                   levels = c(1, 2, 3, 4, 5, 6),"
+"0","                                   labels = c(""U. ESTATAL"", ""U. PRIVADA CRUCH"","
+"0","                                              ""U. PRIVADA"", ""IP"", ""CFT PRIVADO"","
+"0","                                              ""CFT ESTATAL""))"

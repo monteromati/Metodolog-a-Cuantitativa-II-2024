@@ -4,7 +4,7 @@ format: html
 author: Matías Montero
 ---
 
-![](images/logo-ie-ciae.gif){fig-align="right" width="200"}
+![](images/logo-ie-ciae.gif){fig-align="left" width="200"}
 
 # Introducción a R 👨🏽‍💻📈
 
@@ -17,43 +17,26 @@ Para empezar a utilizar R y RStudio, primero debes instalarlos en tu computador.
 ### Paso 1: Instalación de R
 
 1.  **Visita el sitio oficial de CRAN**:
-
     -   Abre tu navegador web y dirígete al sitio de descarga de R en [The Comprehensive R Archive Network](https://cran.r-project.org/) (CRAN).
-
 2.  **Selecciona tu sistema operativo**:
-
     -   En la página de CRAN, verás enlaces para diferentes sistemas operativos. Haz clic en el enlace de tu sistema operativo (Windows, macOS o Linux).
-
 3.  **Descarga e instala R**:
-
     -   Sigue las instrucciones específicas para tu sistema operativo:
-
         -   **Windows**: Haz clic en "Download R for Windows" y luego en "base". Descarga el instalador ejecutable (.exe) y ábrelo. Sigue las instrucciones del instalador para completar la instalación.
-
         -   **macOS**: Haz clic en "Download R for macOS". Descarga el archivo de paquete (.pkg) y ábrelo. Sigue las instrucciones del instalador para completar la instalación.
-
         -   **Linux**: Sigue las instrucciones específicas para tu distribución de Linux en la sección correspondiente de CRAN. Generalmente, esto implicará agregar un repositorio CRAN a tu gestor de paquetes y luego instalar R usando tu gestor de paquetes (por ejemplo, `sudo apt-get install r-base` para Ubuntu).
 
 ### Paso 2: Instalación de RStudio
 
 1.  **Visita el sitio oficial de RStudio**:
-
     -   Abre tu navegador web y dirígete al sitio web Posit para descargar el instalador: [RStudio Download](#0).
-
 2.  **Descarga el instalador de RStudio**:
-
     -   En la página de descarga, verás diferentes opciones de instalador para distintos sistemas operativos. Haz clic en el enlace correspondiente a tu sistema operativo.
-
 3.  **Instala RStudio**:
-
     -   Sigue las instrucciones específicas del instalador:
-
-        -   **Windows**: Descarga el instalador ejecutable (.exe) y ábrelo. Sigue las instrucciones del instalador para completar la instalación.
-
-        -   **macOS**: Descarga el archivo de paquete (.dmg) y ábrelo. Arrastra el ícono de RStudio a tu carpeta de Aplicaciones.
-
-        -   **Linux**: Descarga el archivo de paquete adecuado para tu distribución (por ejemplo, .deb para Ubuntu o .rpm para Fedora). Abre una terminal y usa tu gestor de paquetes para instalar el archivo (por ejemplo, `sudo dpkg -i rstudio-x.yy.zz-amd64.deb` para Ubuntu).
-
+        -   🪟 **Windows**: Descarga el instalador ejecutable (.exe) y ábrelo. Sigue las instrucciones del instalador para completar la instalación.
+        -   🍎 **macOS**: Descarga el archivo de paquete (.dmg) y ábrelo. Arrastra el ícono de RStudio a tu carpeta de Aplicaciones.
+        -   🐧 **Linux**: Descarga el archivo de paquete adecuado para tu distribución (por ejemplo, .deb para Ubuntu o .rpm para Fedora). Abre una terminal y usa tu gestor de paquetes para instalar el archivo (por ejemplo, `sudo dpkg -i rstudio-x.yy.zz-amd64.deb` para Ubuntu).
         -   Una vez completada la instalación de R y RStudio, abre RStudio y ¡listo!
 
 De ahora en adelante emplearemos RStudio, que es la interfaz que nos permite utilizar R de una forma algo más amigable. Digo "más amigable" porque en realidad, aunque en un principio lo percibas algo críptico esto de analizar datos usando código, en realidad verás que en estas guías de paso a paso te abrirán las puertas para descubrir este (nuevo) universo con mucha facilidad.
@@ -75,22 +58,14 @@ Como podrás haber notado, la interfaz de RStudio está organizada en varios pan
 3.  **Panel de Entorno/Historia (arriba a la derecha):**
 
     -   **Entorno:** Muestra las variables, funciones y objetos de datos que has creado en tu sesión actual de R.
-
     -   **Historia:** Registra los comandos que has ejecutado anteriormente.
 
 4.  **Panel de Archivos/Gráficos/Ayuda/Visualizador (abajo a la derecha):**
 
     -   **Archivos:** Explora los archivos y directorios de tu proyecto.
-
     -   **Gráficos:** Muestra los gráficos que creas en R.
-
     -   **Ayuda:** Accede a la documentación de R y a los archivos de ayuda de los paquetes instalados.
-
     -   **Visualizador:** Examina objetos de datos como tablas y marcos de datos en un formato más fácil de leer.
-
-5.  **Barra de herramientas:** Contiene botones para ejecutar código, crear nuevos archivos y acceder a otras opciones.
-
-6.  **Barra de estado:** Muestra información sobre la sesión actual de R.
 
 ::: callout-note
 La interfaz de RStudio es altamente personalizable, permitiéndote ordenar los paneles de la manera que prefieras y ajustar la apariencia del entorno para adaptarlo a tu gusto. ¡Sí! Puedes ponerlo en color oscuro y colores cálidos, en lugar del aspecto blanco predeterminado, y así no dañar tus lindos ojitos 👀🌟
@@ -149,7 +124,7 @@ fecha_hora
 Como podrás haber intuido:
 
 -   Un vector es una secuencia de datos del mismo tipo.
--   El nombre creado al objeto es completamente a nuestra elección. Como ves en el ejemplo, puede llamarse `hola` o `CharVar` donde almacenamos la información textual de `verde` y `amarillo`.
+-   El nombre creado al objeto es completamente a nuestra elección. Como ves en el ejemplo, puede llamarse `CharVar` o `hola`.
 
 En general, trabajarás en R usando un `data.frame`, que significa cuadro de datos. Un data.frame es un objeto que almacena un conjunto de vectores que, a su vez, pueden ser vectores que almacenan información de tipo numérica, factores, entre otros. Comúnmente, los vectores dentro de un `data.frame` se les conoce como variables, las cuales son las columnas que almacenan atributos de la unidad de observación de nuestro conjunto de datos representados en las filas. Por ejemplo, las filas pueden ser estudiantes, escuelas, países, mientras que las columna serán sus atributos (e.g., género).
 
@@ -163,7 +138,7 @@ En el guión de R que generaste en tu sesión de RStudio, crea un vector llamado
 
 Sobre este `data.frame` podrás calcular diferentes estadísticos como un promedio o desviación estándar.
 
-### Ejercicio 2: Explorar un data frame
+### Ejercicio 2: Explorar un data frame 🔍
 
 Crea un objeto llamado `CarTab` empleando los datos `mtcars`, el cual son datos de ejemplo de la revista Motor Trend US de 1974, donde cada fila es un auto y sus diferentes atributos (variables). Luego, sobre el objeto `CarTab`, emplea los comandos `class()`, `str()`, `head()`, y `summary()`. Termina calculando el promedio de la variable `hp` usando la función `mean()`.
 
@@ -171,29 +146,17 @@ Crea un objeto llamado `CarTab` empleando los datos `mtcars`, el cual son datos 
 ## Escribe `CarTab` asignándolo con `<-` y luego escribe `mtcars`. Para usar los comandos, escribe el comando respectivo y entre los paréntesis escribe el nombre de objeto `CarTab`. Para el comando `mean()` tendrás que especificar la columna con `$` del objeto.
 :::
 
-Para ser concisos, hoy aprendiste que puedes manejar diferentes tipos de datos en R:
-
--   Numéricos: Números enteros y decimales.
--   Caracteres: Cadenas de texto.
--   Factores: Datos categóricos ordenados o no ordenados.
--   Fechas: Información de tiempo en un formato de fecha, que también puede incluir hora.
--   Lógicos: Valores de verdad (`TRUE` o `FALSE`).
--   Datos perdidos: Información faltante (`NA`) en un conjunto de datos.
+Resumiendo, puedes manejar diferentes tipos de datos en R: - Numéricos: Números enteros y decimales. - Caracteres: Cadenas de texto. - Factores: Datos categóricos ordenados o no ordenados. - Fechas: Información de tiempo en un formato de fecha, que también puede incluir hora. - Lógicos: Valores de verdad (`TRUE` o `FALSE`). - Datos perdidos: Información faltante (`NA`) en un conjunto de datos.
 
 ### Ejercicio 3: Gráficos Básicos
 
 En este ejercicio, vamos a crear gráficos básicos utilizando el objeto `CarTab`.
 
 1.  **Crea un gráfico de dispersión**:
-
     -   Muestra la relación entre las variables `hp` (caballos de fuerza) y `mpg` (millas por galón) del conjunto de datos `CarTab`. Para ello, usa el comando `plot()` indexando el cuadro de datos `CarTab` con el signo `$` con las variables mencionadas anteriormente, separándolos por coma.
-
 2.  **Dale color** 🎨:
-
     -   Muestra la relación entre las mismas variables, pero esta vez colorea los puntos de azul. Tendrás que ocupar, dentro de ``` plot(datos$variable1,``datos$variable2``) ```, el argumento `col = ""` con el nombre del color que desees en inglés (e.g., "red"). Recuerda anteponer una coma `,` para separar los argumentos de un comando.
-
 3.  **Crea un histograma**:
-
     -   Muestra la distribución de la variable `qsec` (cuarto de milla en segundos) usando el comando `hist()`.
 
 ::: callout-tip
@@ -209,7 +172,6 @@ Transformar variables te permite crear nuevos indicadores y categorías para an�
 :::
 
 1.  **Crea una nueva variable `rhpwt`**:
-
     -   Calcula una división entre `hp` (caballos de fuerza) y `wt` (peso en miles de libras) y almacénala en una nueva variable `rhpwt`.
 
 ::: callout-tip
@@ -217,7 +179,6 @@ Usa el operador de división `/` para calcularlo y guarda el resultado en `CarTa
 :::
 
 2.  **Crea una variable categórica `Rapido`**:
-
     -   Utiliza la función `ifelse` para crear una nueva variable `Rapido` que tome el valor 1 si `qsec` es menor a 18, y 0 en caso contrario.
 
 ::: callout-tip
@@ -229,30 +190,320 @@ La función ifelse() tiene la estructura: `ifelse(condición, valor_si_verdadero
 En este ejercicio, aprenderás a extraer subconjuntos de datos del objeto `CarTab`.
 
 1.  **Extrae un subconjunto de datos**:
-
     -   Extrae las columnas `qsec` y `Rapido` y almacénalas en un nuevo objeto llamado `Sub_CarTab`.
 
 ::: callout-tip
-Usa la notación de corchetes `[]`` para seleccionar columnas específicas de un data frame. La sintaxis es `nombre_de_tu_data_frame[ , c("nombre_columna1", "nombre_columna2"]`.
+Usa la notación de corchetes ``` []`` para seleccionar columnas específicas de un data frame. La sintaxis es ```nombre_de_tu_data_frame\[ , c("nombre_columna1", "nombre_columna2"\]\`.
 :::
 
 ### Ejercicio 6: Regresión
 
-En este ejercicio, realizarás un análisis de regresión lineal utilizando el objeto `CarTab`.
+En este ejercicio, estimarás un modelo de regresión lineal utilizando el objeto `CarTab`.
 
 1.  **Ajusta un modelo de regresión lineal**:
-
     -   Ajusta un modelo de regresión lineal que prediga `qsec` en función de `hp` y `wt` asignado con `<-` a un objeto que lo llamarás `mod1`.
 
 ::: callout-tip
-La función lm() ajusta modelos de regresión lineal. La estructura es `lm(formula, data)`, donde `formula` es una fórmula de la forma `variable_dependiente ~ predictor1 + predictor2`. Usa `summary()` para obtener las estimaciones del modelo ajustado, por ejemplo summary(lm(qsec ~ hp + wt, data = CarTab)).
+La función `lm()` ajusta modelos de regresión lineal. La estructura es `lm(formula, data)`, donde `formula` es una fórmula de la forma `variable_dependiente ~ predictor1 + predictor2`. Usa `summary()` para obtener las estimaciones del modelo ajustado, por ejemplo `summary(lm(qsec ~ hp + wt, data = CarTab))`.
 :::
+
+::: callout-tip
+Al final de este documento encontrarás las soluciones a los ejercicios.
+:::
+
+# Análisis Descriptivo
+
+¿Cómo se ve un flujo de trabajo inicial de análisis de datos en R? Un flujo de trabajo típico de análisis de datos en R comienza con la configuración del directorio de trabajo. El directorio de trabajo es la carpeta en la que se almacenarán tu script, datos, y los diferentes archivos resultantes de tu análisis, como tablas y gráficos. Establecer el directorio de trabajo te permite organizar tus archivos de manera eficiente y asegura que R sepa dónde buscar y guardar archivos.
+
+## ¿Cómo establecer tu directorio de trabajo?
+
+1.  **Encuentra la ruta del directorio de trabajo**:
+    -   **Windows**:
+        -   Abre el Explorador de archivos y navega hasta la carpeta donde quieres almacenar tus archivos.
+        -   Haz clic en la barra de direcciones y copia la ruta completa.
+    -   **macOS**:
+        -   Abre el Finder y navega hasta la carpeta donde quieres almacenar tus archivos.
+        -   Haz clic derecho en la carpeta, selecciona "Obtener información" y copia la ruta que aparece en "Dónde".
+2.  **Establece el directorio de trabajo en R**:
+    -   Usa la función `setwd()` para establecer el directorio de trabajo. La ruta debe estar entre comillas y utilizar barras diagonales (`/`) en lugar de barras invertidas (`\`).
+
+```{r message=FALSE, warning=FALSE}
+# setwd("C:/tu_ruta/del_computador/que_estas/usando")
+# Ejemplo para Windows: setwd("C:/Users/TuNombre/Magister/MetCuant")
+# Ejemplo para macOS: setwd("/Users/TuNombre/Magister/MetCuant")
+```
+
+-   Puedes verificar el directorio de trabajo actual utilizando la función `getwd()`, que te mostrará la ruta del directorio de trabajo establecido.
+
+::: callout-warning
+Organiza tus archivos en subcarpetas dentro de tu directorio de trabajo, por ejemplo, `data` para datos brutos, `scripts` para tus guiones de R, y `outputs` para resultados como gráficos y tablas. Te recomiendo el protocolo IPO que puedes ver [aquí](https://lisa-coes.com/ipo-repro/) para organizar tus carpetas. Con esto, tendrás un flujo de trabajo ordenado, y tu futuro yo te lo agradecerá.
+:::
+
+## Instalación de Paquetes
+
+Para llevar a cabo análisis de datos en R, a menudo necesitamos paquetes adicionales que no vienen incluidos en la instalación base de R. Estos paquetes contienen funciones y datasets adicionales que facilitan diversas tareas.
+
+1.  **Instalación de Paquetes**:
+    -   Usa la función `install.packages()` para instalar los paquetes necesarios.
+
+```{r message=FALSE, warning=FALSE, echo=TRUE, results='hide'}
+options(repos = c(CRAN = "https://cran.r-project.org"))
+install.packages("readxl")   # Paquete para importar datos en formato Excel}
+install.packages("janitor")  # Paquete para limpieza de datos
+install.packages("ggplot2")  # Paquete para generar gráficos
+```
+
+2.  **Carga de Paquetes**:
+    -   Después de instalar los paquetes, usa la función `library()` para cargarlos en tu sesión de R.
+
+```{r message=FALSE, warning=FALSE, echo=TRUE, results='hide'}
+library(readxl)
+library(janitor)
+library(ggplot2)
+```
+
+## Importar Datos
+
+Para importar datos en R desde un archivo Excel, usaremos el paquete `readxl`.
+
+1.  **Importa los datos**:
+    -   Usa la función `read_excel()` para leer los datos de un archivo Excel y almacenarlos en un data frame. Asegúrate tener descargado el archivo Excel `Base-Personal-Academico-2021_SIES.xlsx` en tu directorio de trabajo.
+
+```{r message=FALSE, warning=FALSE, echo=TRUE, results='hide'}
+personal_2021 <- read_excel("Base-Personal-Academico-2021_SIES.xlsx")
+```
+
+2.  **Visualiza los datos**:
+    -   Usa la función `View()` para abrir una nueva ventana y visualizar la base de datos.
+
+```{r message=FALSE, warning=FALSE, echo=TRUE, results='hide'}
+View(personal_2021)
+```
+
+## Limpieza de Datos
+
+Los nombres de las variables en la base de datos pueden necesitar limpieza para ser más manejables.
+
+1.  **Limpia los nombres de las variables**:
+    -   Usa la función `clean_names()` del paquete `janitor` para estandarizar los nombres de las variables.
+
+```{r message=FALSE, warning=FALSE, echo=TRUE, results='hide'}
+personal_2021  <- clean_names(personal_2021)
+```
+
+2.  **Exploremos los datos**:
+    -   Usa diversas funciones para obtener una visión general de los datos.
+
+```{r message=FALSE, warning=FALSE, echo=TRUE, results='hide'}
+class(personal_2021)    # Muestra la clase de objeto de personal_2021
+head(personal_2021)     # Muestra los primeros 6 casos en la base de datos
+names(personal_2021)    # Lista los nombres de las variables en la base de datos
+dim(personal_2021)      # Muestra el número de variables y casos
+summary(personal_2021)  # Entrega estadísticos descriptivos para cada variable
+str(personal_2021)      # Muestra la estructura interna de la base de datos
+```
+
+### Generación de Nuevas Variables
+
+1.  **Crear una nueva variable `tipo_ies`**:
+    -   Primero, genera una nueva variable `tipo_ies` que inicialmente sea igual a `codigo_institucion`.
+
+```{r message=FALSE, warning=FALSE, echo=TRUE, results='hide'}
+personal_2021$tipo_ies <- personal_2021$codigo_institucion
+```
+
+2.  **Asignar valores a `tipo_ies` según `codigo_institucion`**:
+    -   Usa el operador de asignación `<-` para clasificar las instituciones en diferentes tipos.
+
+```{r message=FALSE, warning=FALSE, echo=TRUE, results='hide'}
+### 1: Universidad Estatal CRUCH.
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 70] <- 1
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 71] <- 1
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 72] <- 1
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 73] <- 1
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 74] <- 1
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 75] <- 1
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 76] <- 1
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 77] <- 1
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 78] <- 1
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 79] <- 1
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 80] <- 1
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 81] <- 1
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 82] <- 1
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 83] <- 1
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 84] <- 1
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 85] <- 1
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 895] <- 1
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 896] <- 1
+
+### 2: Universidad Privada CRUCH.
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 3] <- 2
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 34] <- 2
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 69] <- 2
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 86] <- 2
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 87] <- 2
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 88] <- 2
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 89] <- 2
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 90] <- 2
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 91] <- 2
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 92] <- 2
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 93] <- 2
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 94] <- 2
+
+### 3: Universidad Privada.
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 1] <- 3
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 2] <- 3
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 4] <- 3
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 7] <- 3
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 9] <- 3
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 10] <- 3
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 11] <- 3
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 13] <- 3
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 17] <- 3
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 19] <- 3
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 20] <- 3
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 22] <- 3
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 23] <- 3
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 26] <- 3
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 31] <- 3
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 38] <- 3
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 39] <- 3
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 42] <- 3
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 45] <- 3
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 46] <- 3
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 48] <- 3
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 50] <- 3
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 54] <- 3
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 68] <- 3
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 651] <- 3
+
+### 4: Instituto Profesional.
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 99] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 100] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 101] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 103] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 104] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 106] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 108] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 111] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 113] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 116] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 117] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 120] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 123] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 129] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 132] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 137] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 138] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 139] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 143] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 144] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 152] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 155] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 162] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 165] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 170] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 171] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 176] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 193] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 676] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 693] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 714] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 743] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 754] <- 4
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 767] <- 4
+
+### 5: Centro de Formación Técnica.
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 214] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 218] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 229] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 236] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 241] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 257] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 260] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 273] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 280] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 305] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 312] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 319] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 328] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 331] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 367] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 374] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 382] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 390] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 398] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 426] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 427] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 430] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 435] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 450] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 456] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 492] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 498] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 534] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 536] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 591] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 629] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 633] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 691] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 701] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 730] <- 5
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 258] <- 5
+
+### 6: Centros de Formación Técnica Estatales.
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 902] <- 6
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 906] <- 6
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 908] <- 6
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 909] <- 6
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 910] <- 6
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 911] <- 6
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 912] <- 6
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 913] <- 6
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 914] <- 6
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 915] <- 6
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 916] <- 6
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 917] <- 6
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 918] <- 6
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 919] <- 6
+personal_2021$tipo_ies[personal_2021$codigo_institucion == 920] <- 6
+```
+
+### Visualización y Etiquetado de Datos
+
+1.  **Visualiza los valores generados**:
+
+```{r message=FALSE, warning=FALSE, echo=TRUE, results='hide'}
+personal_2021$tipo_ies
+```
+
+2.  **Asigna etiquetas a los valores generados**:
+    -   Usa la función `factor()` para asignar etiquetas a los valores de `tipo_ies`.
+
+```{r message=FALSE, warning=FALSE, echo=TRUE, results='hide'}
+personal_2021$tipo_ies_n <- factor(personal_2021$tipo_ies,
+                                   levels = c(1, 2, 3, 4, 5, 6),
+                                   labels = c("U. ESTATAL", "U. PRIVADA CRUCH",
+                                              "U. PRIVADA", "IP", "CFT PRIVADO",
+                                              "CFT ESTATAL"))
+```
+
+## Selección de Subconjuntos de Datos
+
+Para trabajar con subconjuntos específicos de datos, puedes usar la función `subset()` o la notación de corchetes `[]`.
+
+1.  **Selecciona un subconjunto de datos**:
+    -   Filtra las filas del data frame según la nueva variable categórica `tipo_ies_n`.
+
+```{r message=FALSE, warning=FALSE, echo=TRUE, results='hide'}
+personal_2021_uestatal <- personal_2021[which(personal_2021$tipo_ies_n == "U. ESTATAL"),]
+```
 
 ## Soluciones de los Ejercicios
 
 ### Ejercicio 1
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 edad <- c(40, 5, 16, 28, 32)
 nombre <- c("Daniel", "Mariela", "Miguel", "Pablo", "Javiera")
 misdatos <- data.frame(nombre, edad)
@@ -261,7 +512,7 @@ misdatos
 
 ### Ejercicio 2
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 CarTab <- mtcars
 class(CarTab)
 CarTab
@@ -273,34 +524,32 @@ mean(CarTab$hp)
 
 ### Ejercicio 3
 
-```{r}
-CarTab <- mtcars
-class(CarTab)
-CarTab
-str(CarTab)
-head(CarTab)
-summary(CarTab)
-mean(CarTab$hp)
-```
-
-### Ejercicio 4
-
-```{r}
+```{r message=FALSE, warning=FALSE}
 plot(CarTab$hp, CarTab$mpg)
 plot(CarTab$hp, CarTab$mpg, col = "blue")
 hist(CarTab$qsec)
 ```
 
+### Ejercicio 4
+
+```{r message=FALSE, warning=FALSE}
+CarTab$rhpwt <- CarTab$hp/CarTab$wt
+CarTab$rhpwt
+CarTab$Rapido <- ifelse(CarTab$qsec<18,1,0)
+CarTab
+```
+
 ### Ejercicio 5
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 Sub_CarTab <- CarTab[ , c("qsec", "Rapido")]
 Sub_CarTab
 ```
 
 ### Ejercicio 6
 
-```{r}
+```{r message=FALSE, warning=FALSE}
+CarTab <- mtcars
 mod1 <- lm(qsec ~ hp + wt, data = CarTab)
 summary(mod1)
 ```

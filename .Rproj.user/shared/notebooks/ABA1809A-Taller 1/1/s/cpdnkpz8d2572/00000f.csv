@@ -1,0 +1,1 @@
+"0","personal_2021_uestatal <- personal_2021[which(personal_2021$tipo_ies_n == ""U. ESTATAL""),]"

@@ -1,0 +1,5 @@
+"0","CarTab <- mtcars"
+"0","Sub_CarTab <- CarTab[ , c(""qsec"", ""Rapido"")]"
+"2","Error in `[.data.frame`(CarTab, , c(""qsec"", ""Rapido"")) : 
+  undefined columns selected
+"

@@ -1,0 +1,1 @@
+"0","plot(CarTab$hp, CarTab$mpg, col = ""blue"")"
