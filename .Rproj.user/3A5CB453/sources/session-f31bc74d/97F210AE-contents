@@ -13,19 +13,19 @@ Queridos y queridas estudiantes del Magíster en Investigación en Educación, �
 🖊 Profesora: [Lorena Ortega](https://www.linkedin.com/in/lorena-ortega-ferrand-a9480743/)
 
 -   🏢 Profesora Asociada e Investigadora. [CIAE](https://ciae.uchile.cl/), [Instituto de Estudios Avanzados en Educación](https://ie.uchile.cl/), Universidad de Chile.
--   ✉️ Email: [lorena.ortega\@ciae.uchile.cl](mailto:lorena.ortega@ciae.uchile.cl){.email}
+-   ✉️ Email: [lorena.ortega\@ciae.uchile.cl](mailto:lorena.ortega@ciae.uchile.cl)
 
 🖊 Profesor: [Patricio Rodríguez](https://www.linkedin.com/in/prodrigv/)
 
 -   🏢 Profesor Asistente e Investigador. [CIAE](https://ciae.uchile.cl/), [Instituto de Estudios Avanzados en Educación](https://ie.uchile.cl/), Universidad de Chile.
--   ✉️ Email: [patricio.rodriguez\@ciae.uchile.cl](mailto:patricio.rodriguez@ciae.uchile.cl){.email}
+-   ✉️ Email: [patricio.rodriguez\@ciae.uchile.cl](mailto:patricio.rodriguez@ciae.uchile.cl)
 -   🐦 [Encuéntrame en Twitter](https://x.com/prodriguez_ciae).
 
 🖊 Ayudante: [Matías Montero](https://www.linkedin.com/in/matiasmonteros/)
 
 -   🏢 Asistente de Investigación. [CIAE](https://ciae.uchile.cl/), [Instituto de Estudios Avanzados en Educación](https://ie.uchile.cl/), Universidad de Chile.
 -   👨 Sociólogo, [Universidad de Chile](https://facso.uchile.cl/sociologia) y 👨‍🎓 Estudiante del Magíster en Educación (Diseño de Investigación y Metodología), [Universidad de Oxford](https://www.education.ox.ac.uk/study/msc-education/).
--   ✉️ Email: [matias.montero\@ciae.uchile.cl](mailto:matias.montero@ciae.uchile.cl){.email}
+-   ✉️ Email: [matias.montero\@ciae.uchile.cl](mailto:matias.montero@ciae.uchile.cl)
 -   🐦 [Encuéntrame en Twitter](https://x.com/monteromati).
 
 ![](logo-ie-ciae.gif)
