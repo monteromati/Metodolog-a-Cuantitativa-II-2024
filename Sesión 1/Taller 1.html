@@ -7,7 +7,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Matías Montero">
-<meta name="dcterms.date" content="2026-01-07">
 
 <title>Taller 1</title>
 <style>
@@ -95,12 +94,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           </div>
   </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">January 7, 2026</p>
-    </div>
-  </div>
   
     
   </div>
@@ -117,10 +110,70 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="introducción-a-r" class="level1">
 <h1>Introducción a R 👨🏽‍💻📈</h1>
-<p>Hola, ¡bienvenido a R! R es un lenguaje de programación de código abierto con una apasionada comunidad global y utilizado en diversos campos disciplinares. Ha sido diseñado específicamente para el análisis estadístico y la visualización de datos, pero es ampliamente flexible y sus extensiones ha dado forma a la creación de sitios web, aplicaciones, e incluso el documento que estas leyendo ahora mismo.</p>
-<p>De ahora en adelante emplearemos RStudio, que es la interfaz que nos permite utilizar R de una forma algo más amigable. Digo “más amigable” porque en realidad, aunque en un principio lo percibas algo críptico esto de analizar datos usando código, en realidad verás que en estas guías de paso a paso te abrirán las puertas para descubrir este (nuevo) universo.</p>
-<p>Te invito a que crees un guión (R Script) en RStudio dirigiéndote en la esquina superior izquierda de la pantalla.</p>
-<p><img src="gif1.gif" class="img-fluid"></p>
+<p>Hola, ¡bienvenido a R! R es un lenguaje de programación de código abierto con una apasionada comunidad global y utilizado en diversos campos disciplinares. Ha sido diseñado específicamente para el análisis estadístico y la visualización de datos, pero es ampliamente flexible. Por ejemplo, sus extensiones han dado forma a la creación de sitios web, aplicaciones, e incluso el documento que estas leyendo ahora mismo.</p>
+<section id="instalación-de-r-y-rstudio" class="level2">
+<h2 class="anchored" data-anchor-id="instalación-de-r-y-rstudio">Instalación de R y RStudio</h2>
+<p>Para empezar a utilizar R y RStudio, primero debes instalarlos en tu computador. Vamos paso a paso para instalarlo según el sistema operativo (Windows, macOS y Linux) que tengas.</p>
+<section id="paso-1-instalación-de-r" class="level3">
+<h3 class="anchored" data-anchor-id="paso-1-instalación-de-r">Paso 1: Instalación de R</h3>
+<ol type="1">
+<li><p><strong>Visita el sitio oficial de CRAN</strong>:</p>
+<ul>
+<li>Abre tu navegador web y dirígete al sitio de descarga de R en <a href="https://cran.r-project.org/">The Comprehensive R Archive Network</a> (CRAN).</li>
+</ul></li>
+<li><p><strong>Selecciona tu sistema operativo</strong>:</p>
+<ul>
+<li>En la página de CRAN, verás enlaces para diferentes sistemas operativos. Haz clic en el enlace de tu sistema operativo (Windows, macOS o Linux).</li>
+</ul></li>
+<li><p><strong>Descarga e instala R</strong>:</p>
+<ul>
+<li><p>Sigue las instrucciones específicas para tu sistema operativo:</p>
+<ul>
+<li><p><strong>Windows</strong>: Haz clic en “Download R for Windows” y luego en “base”. Descarga el instalador ejecutable (.exe) y ábrelo. Sigue las instrucciones del instalador para completar la instalación.</p></li>
+<li><p><strong>macOS</strong>: Haz clic en “Download R for macOS”. Descarga el archivo de paquete (.pkg) y ábrelo. Sigue las instrucciones del instalador para completar la instalación.</p></li>
+<li><p><strong>Linux</strong>: Sigue las instrucciones específicas para tu distribución de Linux en la sección correspondiente de CRAN. Generalmente, esto implicará agregar un repositorio CRAN a tu gestor de paquetes y luego instalar R usando tu gestor de paquetes (por ejemplo, <code>sudo apt-get install r-base</code> para Ubuntu).</p></li>
+</ul></li>
+</ul></li>
+</ol>
+</section>
+<section id="paso-2-instalación-de-rstudio" class="level3">
+<h3 class="anchored" data-anchor-id="paso-2-instalación-de-rstudio">Paso 2: Instalación de RStudio</h3>
+<ol type="1">
+<li><p><strong>Visita el sitio oficial de RStudio</strong>:</p>
+<ul>
+<li>Abre tu navegador web y dirígete al sitio web Posit para descargar el instalador: <a href="#0">RStudio Download</a>.</li>
+</ul></li>
+<li><p><strong>Descarga el instalador de RStudio</strong>:</p>
+<ul>
+<li>En la página de descarga, verás diferentes opciones de instalador para distintos sistemas operativos. Haz clic en el enlace correspondiente a tu sistema operativo.</li>
+</ul></li>
+<li><p><strong>Instala RStudio</strong>:</p>
+<ul>
+<li><p>Sigue las instrucciones específicas del instalador:</p>
+<ul>
+<li><p><strong>Windows</strong>: Descarga el instalador ejecutable (.exe) y ábrelo. Sigue las instrucciones del instalador para completar la instalación.</p></li>
+<li><p><strong>macOS</strong>: Descarga el archivo de paquete (.dmg) y ábrelo. Arrastra el ícono de RStudio a tu carpeta de Aplicaciones.</p></li>
+<li><p><strong>Linux</strong>: Descarga el archivo de paquete adecuado para tu distribución (por ejemplo, .deb para Ubuntu o .rpm para Fedora). Abre una terminal y usa tu gestor de paquetes para instalar el archivo (por ejemplo, <code>sudo dpkg -i rstudio-x.yy.zz-amd64.deb</code> para Ubuntu).</p></li>
+<li><p>Una vez completada la instalación de R y RStudio, abre RStudio y ¡listo!</p></li>
+</ul></li>
+</ul></li>
+</ol>
+<p>De ahora en adelante emplearemos RStudio, que es la interfaz que nos permite utilizar R de una forma algo más amigable. Digo “más amigable” porque en realidad, aunque en un principio lo percibas algo críptico esto de analizar datos usando código, en realidad verás que en estas guías de paso a paso te abrirán las puertas para descubrir este (nuevo) universo con mucha facilidad.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+¿Sabías que? También puedes colaborar en R con tus colegas usando <a href="https://posit.cloud/">Posit Cloud</a>. Es algo así como un Google Docs en la nube, pero en R.
+</div>
+</div>
+<div class="callout-body-container callout-body">
+
+</div>
+</div>
+<p>Te invito a que crees un guión (R Script)📋 en RStudio dirigiéndote en la esquina superior izquierda de la pantalla.</p>
+<p><img src="gif1.gif" class="img-fluid" width="300"></p>
 <p>Como podrás haber notado, la interfaz de RStudio está organizada en varios paneles, cada uno con un propósito:</p>
 <ol type="1">
 <li><p><strong>Panel de Script (arriba a la izquierda):</strong> Aquí es donde escribes y editas tu código R. Puedes guardar tus scripts como archivos .R para usarlos más tarde.</p></li>
@@ -153,6 +206,8 @@ Note
 <p>La interfaz de RStudio es altamente personalizable, permitiéndote ordenar los paneles de la manera que prefieras y ajustar la apariencia del entorno para adaptarlo a tu gusto. ¡Sí! Puedes ponerlo en color oscuro y colores cálidos, en lugar del aspecto blanco predeterminado, y así no dañar tus lindos ojitos 👀🌟</p>
 </div>
 </div>
+</section>
+</section>
 <section id="conceptos-básicos" class="level2">
 <h2 class="anchored" data-anchor-id="conceptos-básicos">Conceptos Básicos🔧</h2>
 <p>Clarifiquemos primero algunos términos que comúnmente decimos en R. Te presento primero los objetos.</p>
@@ -255,8 +310,8 @@ Crea los vectores como objetos. Luego, utiliza la función <code>data.frame()</c
 </div>
 <p>Sobre este <code>data.frame</code> podrás calcular diferentes estadísticos como un promedio o desviación estándar.</p>
 </section>
-<section id="ejericicio-2" class="level3">
-<h3 class="anchored" data-anchor-id="ejericicio-2">Ejericicio 2</h3>
+<section id="ejercicio-2" class="level3">
+<h3 class="anchored" data-anchor-id="ejercicio-2">Ejercicio 2</h3>
 <p>Crea un objeto llamado <code>CarTab</code> empleando los datos <code>mtcars</code>, el cual son datos de ejemplo de la revista Motor Trend US de 1974, donde cada fila es un auto y sus diferentes atributos (variables). Luego, sobre el objeto <code>CarTab</code>, emplea los comandos <code>class()</code>, <code>str()</code>, <code>head()</code>, y <code>summary()</code>. Termina calculando el promedio de la variable <code>hp</code> usando la función <code>mean()</code>.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -301,8 +356,8 @@ Escribe <code>CarTab</code> asignándolo con <code>&lt;-</code> y luego escribe 
 </div>
 </div>
 </section>
-<section id="ejercicio-2" class="level3">
-<h3 class="anchored" data-anchor-id="ejercicio-2">Ejercicio 2</h3>
+<section id="ejercicio-2-1" class="level3">
+<h3 class="anchored" data-anchor-id="ejercicio-2-1">Ejercicio 2</h3>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">

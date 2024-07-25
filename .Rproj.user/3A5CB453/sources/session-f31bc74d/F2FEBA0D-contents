@@ -2,20 +2,69 @@
 title: "Taller 1"
 format: html
 author: Matías Montero
-date: 25-07-2024
 ---
 
 ![](images/logo-ie-ciae.gif){fig-align="right" width="200"}
 
 # Introducción a R 👨🏽‍💻📈
 
-Hola, ¡bienvenido a R! R es un lenguaje de programación de código abierto con una apasionada comunidad global y utilizado en diversos campos disciplinares. Ha sido diseñado específicamente para el análisis estadístico y la visualización de datos, pero es ampliamente flexible y sus extensiones ha dado forma a la creación de sitios web, aplicaciones, e incluso el documento que estas leyendo ahora mismo.
+Hola, ¡bienvenido a R! R es un lenguaje de programación de código abierto con una apasionada comunidad global y utilizado en diversos campos disciplinares. Ha sido diseñado específicamente para el análisis estadístico y la visualización de datos, pero es ampliamente flexible. Por ejemplo, sus extensiones han dado forma a la creación de sitios web, aplicaciones, e incluso el documento que estas leyendo ahora mismo.
+
+## Instalación de R y RStudio
+
+Para empezar a utilizar R y RStudio, primero debes instalarlos en tu computador. Vamos paso a paso para instalarlo según el sistema operativo (Windows, macOS y Linux) que tengas.
+
+### Paso 1: Instalación de R
+
+1.  **Visita el sitio oficial de CRAN**:
+
+    -   Abre tu navegador web y dirígete al sitio de descarga de R en [The Comprehensive R Archive Network](https://cran.r-project.org/) (CRAN).
+
+2.  **Selecciona tu sistema operativo**:
+
+    -   En la página de CRAN, verás enlaces para diferentes sistemas operativos. Haz clic en el enlace de tu sistema operativo (Windows, macOS o Linux).
+
+3.  **Descarga e instala R**:
+
+    -   Sigue las instrucciones específicas para tu sistema operativo:
+
+        -   **Windows**: Haz clic en "Download R for Windows" y luego en "base". Descarga el instalador ejecutable (.exe) y ábrelo. Sigue las instrucciones del instalador para completar la instalación.
+
+        -   **macOS**: Haz clic en "Download R for macOS". Descarga el archivo de paquete (.pkg) y ábrelo. Sigue las instrucciones del instalador para completar la instalación.
+
+        -   **Linux**: Sigue las instrucciones específicas para tu distribución de Linux en la sección correspondiente de CRAN. Generalmente, esto implicará agregar un repositorio CRAN a tu gestor de paquetes y luego instalar R usando tu gestor de paquetes (por ejemplo, `sudo apt-get install r-base` para Ubuntu).
+
+### Paso 2: Instalación de RStudio
+
+1.  **Visita el sitio oficial de RStudio**:
+
+    -   Abre tu navegador web y dirígete al sitio web Posit para descargar el instalador: [RStudio Download](#0).
+
+2.  **Descarga el instalador de RStudio**:
+
+    -   En la página de descarga, verás diferentes opciones de instalador para distintos sistemas operativos. Haz clic en el enlace correspondiente a tu sistema operativo.
+
+3.  **Instala RStudio**:
+
+    -   Sigue las instrucciones específicas del instalador:
+
+        -   **Windows**: Descarga el instalador ejecutable (.exe) y ábrelo. Sigue las instrucciones del instalador para completar la instalación.
+
+        -   **macOS**: Descarga el archivo de paquete (.dmg) y ábrelo. Arrastra el ícono de RStudio a tu carpeta de Aplicaciones.
+
+        -   **Linux**: Descarga el archivo de paquete adecuado para tu distribución (por ejemplo, .deb para Ubuntu o .rpm para Fedora). Abre una terminal y usa tu gestor de paquetes para instalar el archivo (por ejemplo, `sudo dpkg -i rstudio-x.yy.zz-amd64.deb` para Ubuntu).
+
+        -   Una vez completada la instalación de R y RStudio, abre RStudio y ¡listo!
 
 De ahora en adelante emplearemos RStudio, que es la interfaz que nos permite utilizar R de una forma algo más amigable. Digo "más amigable" porque en realidad, aunque en un principio lo percibas algo críptico esto de analizar datos usando código, en realidad verás que en estas guías de paso a paso te abrirán las puertas para descubrir este (nuevo) universo con mucha facilidad.
 
+::: callout-tip
+## ¿Sabías que? También puedes colaborar en R con tus colegas usando [Posit Cloud](https://posit.cloud/). Es algo así como un Google Docs en la nube, pero en R.
+:::
+
 Te invito a que crees un guión (R Script)📋 en RStudio dirigiéndote en la esquina superior izquierda de la pantalla.
 
-![](gif1.gif)
+![](gif1.gif){width="400"}
 
 Como podrás haber notado, la interfaz de RStudio está organizada en varios paneles, cada uno con un propósito:
 
@@ -104,7 +153,7 @@ Como podrás haber intuido:
 
 En general, trabajarás en R usando un `data.frame`, que significa cuadro de datos. Un data.frame es un objeto que almacena un conjunto de vectores que, a su vez, pueden ser vectores que almacenan información de tipo numérica, factores, entre otros. Comúnmente, los vectores dentro de un `data.frame` se les conoce como variables, las cuales son las columnas que almacenan atributos de la unidad de observación de nuestro conjunto de datos representados en las filas. Por ejemplo, las filas pueden ser estudiantes, escuelas, países, mientras que las columna serán sus atributos (e.g., género).
 
-### Ejercicio 1
+### Ejercicio 1: Creando tu primer `data.frame()` 🕸️
 
 En el guión de R que generaste en tu sesión de RStudio, crea un vector llamado `edad` que concatene cinco valores numéricos. También, crea un vector llamado `nombre` que concatene cinco nombres de personas de tipo caracteres.
 
@@ -114,7 +163,7 @@ En el guión de R que generaste en tu sesión de RStudio, crea un vector llamado
 
 Sobre este `data.frame` podrás calcular diferentes estadísticos como un promedio o desviación estándar.
 
-### Ejericicio 2
+### Ejercicio 2: Explorar un data frame
 
 Crea un objeto llamado `CarTab` empleando los datos `mtcars`, el cual son datos de ejemplo de la revista Motor Trend US de 1974, donde cada fila es un auto y sus diferentes atributos (variables). Luego, sobre el objeto `CarTab`, emplea los comandos `class()`, `str()`, `head()`, y `summary()`. Termina calculando el promedio de la variable `hp` usando la función `mean()`.
 
@@ -131,6 +180,74 @@ Para ser concisos, hoy aprendiste que puedes manejar diferentes tipos de datos e
 -   Lógicos: Valores de verdad (`TRUE` o `FALSE`).
 -   Datos perdidos: Información faltante (`NA`) en un conjunto de datos.
 
+### Ejercicio 3: Gráficos Básicos
+
+En este ejercicio, vamos a crear gráficos básicos utilizando el objeto `CarTab`.
+
+1.  **Crea un gráfico de dispersión**:
+
+    -   Muestra la relación entre las variables `hp` (caballos de fuerza) y `mpg` (millas por galón) del conjunto de datos `CarTab`. Para ello, usa el comando `plot()` indexando el cuadro de datos `CarTab` con el signo `$` con las variables mencionadas anteriormente, separándolos por coma.
+
+2.  **Dale color** 🎨:
+
+    -   Muestra la relación entre las mismas variables, pero esta vez colorea los puntos de azul. Tendrás que ocupar, dentro de ``` plot(datos$variable1,``datos$variable2``) ```, el argumento `col = ""` con el nombre del color que desees en inglés (e.g., "red"). Recuerda anteponer una coma `,` para separar los argumentos de un comando.
+
+3.  **Crea un histograma**:
+
+    -   Muestra la distribución de la variable `qsec` (cuarto de milla en segundos) usando el comando `hist()`.
+
+::: callout-tip
+Los gráficos son útiles para visualizar relaciones y distribuciones de datos. Elige el tipo de gráfico según tus preguntas de investigación y el tipo de análisis que necesites.
+:::
+
+### Ejercicio 4: Transformación de Variables
+
+En este ejercicio, aprenderás a crear nuevas variables a partir de las existentes en el objeto `CarTab`.
+
+::: callout-tip
+Transformar variables te permite crear nuevos indicadores y categorías para análisis más sofisticados.
+:::
+
+1.  **Crea una nueva variable `rhpwt`**:
+
+    -   Calcula una división entre `hp` (caballos de fuerza) y `wt` (peso en miles de libras) y almacénala en una nueva variable `rhpwt`.
+
+::: callout-tip
+Usa el operador de división `/` para calcularlo y guarda el resultado en `CarTab` indexándolo con el signo `$`.
+:::
+
+2.  **Crea una variable categórica `Rapido`**:
+
+    -   Utiliza la función `ifelse` para crear una nueva variable `Rapido` que tome el valor 1 si `qsec` es menor a 18, y 0 en caso contrario.
+
+::: callout-tip
+La función ifelse() tiene la estructura: `ifelse(condición, valor_si_verdadero, valor_si_falso)`. Úsala para crear la variable `Rapido` basada en la condición lógica anterior. Usa el operador lógico `<`.
+:::
+
+### Ejercicio 5: Indexación o Extracción de Datos
+
+En este ejercicio, aprenderás a extraer subconjuntos de datos del objeto `CarTab`.
+
+1.  **Extrae un subconjunto de datos**:
+
+    -   Extrae las columnas `qsec` y `Rapido` y almacénalas en un nuevo objeto llamado `Sub_CarTab`.
+
+::: callout-tip
+Usa la notación de corchetes `[]`` para seleccionar columnas específicas de un data frame. La sintaxis es `nombre_de_tu_data_frame[ , c("nombre_columna1", "nombre_columna2"]`.
+:::
+
+### Ejercicio 6: Regresión
+
+En este ejercicio, realizarás un análisis de regresión lineal utilizando el objeto `CarTab`.
+
+1.  **Ajusta un modelo de regresión lineal**:
+
+    -   Ajusta un modelo de regresión lineal que prediga `qsec` en función de `hp` y `wt` asignado con `<-` a un objeto que lo llamarás `mod1`.
+
+::: callout-tip
+La función lm() ajusta modelos de regresión lineal. La estructura es `lm(formula, data)`, donde `formula` es una fórmula de la forma `variable_dependiente ~ predictor1 + predictor2`. Usa `summary()` para obtener las estimaciones del modelo ajustado, por ejemplo summary(lm(qsec ~ hp + wt, data = CarTab)).
+:::
+
 ## Soluciones de los Ejercicios
 
 ### Ejercicio 1
@@ -144,6 +261,50 @@ misdatos
 
 ### Ejercicio 2
 
+```{r}
+CarTab <- mtcars
+class(CarTab)
+CarTab
+str(CarTab)
+head(CarTab)
+summary(CarTab)
+mean(CarTab$hp)
+```
+
+### Ejercicio 3
+
+```{r}
+CarTab <- mtcars
+class(CarTab)
+CarTab
+str(CarTab)
+head(CarTab)
+summary(CarTab)
+mean(CarTab$hp)
+```
+
+### Ejercicio 4
+
+```{r}
+plot(CarTab$hp, CarTab$mpg)
+plot(CarTab$hp, CarTab$mpg, col = "blue")
+hist(CarTab$qsec)
+```
+
+### Ejercicio 5
+
+```{r}
+Sub_CarTab <- CarTab[ , c("qsec", "Rapido")]
+Sub_CarTab
+```
+
+### Ejercicio 6
+
+```{r}
+mod1 <- lm(qsec ~ hp + wt, data = CarTab)
+summary(mod1)
+```
+
 ::: callout-important
-## Para citar este archivo Quarto, por favor, considera este formato: Montero, M. (2024). Metodología Cuantitativa II 2024 \[Repositorio\]. GitHub. URL
+## Para citar este archivo Quarto, por favor, considera este formato: Montero, M., Ortega, L. & Rodríguez, P. (2024). Metodología Cuantitativa II 2024 \[Repositorio\]. GitHub. https://github.com/monteromati/Metodologia-Cuantitativa-II-2024
 :::
