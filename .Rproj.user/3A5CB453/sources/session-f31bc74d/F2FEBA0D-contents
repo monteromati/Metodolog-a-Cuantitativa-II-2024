@@ -1,0 +1,149 @@
+---
+title: "Taller 1"
+format: html
+author: Matías Montero
+date: 25-07-2024
+---
+
+![](images/logo-ie-ciae.gif){fig-align="right" width="200"}
+
+# Introducción a R 👨🏽‍💻📈
+
+Hola, ¡bienvenido a R! R es un lenguaje de programación de código abierto con una apasionada comunidad global y utilizado en diversos campos disciplinares. Ha sido diseñado específicamente para el análisis estadístico y la visualización de datos, pero es ampliamente flexible y sus extensiones ha dado forma a la creación de sitios web, aplicaciones, e incluso el documento que estas leyendo ahora mismo.
+
+De ahora en adelante emplearemos RStudio, que es la interfaz que nos permite utilizar R de una forma algo más amigable. Digo "más amigable" porque en realidad, aunque en un principio lo percibas algo críptico esto de analizar datos usando código, en realidad verás que en estas guías de paso a paso te abrirán las puertas para descubrir este (nuevo) universo con mucha facilidad.
+
+Te invito a que crees un guión (R Script)📋 en RStudio dirigiéndote en la esquina superior izquierda de la pantalla.
+
+![](gif1.gif)
+
+Como podrás haber notado, la interfaz de RStudio está organizada en varios paneles, cada uno con un propósito:
+
+1.  **Panel de Script (arriba a la izquierda):** Aquí es donde escribes y editas tu código R. Puedes guardar tus scripts como archivos .R para usarlos más tarde.
+
+2.  **Panel de Consola (abajo a la izquierda):** Muestra los resultados de la ejecución de tu código, mensajes de error y advertencias. También, puedes escribir comandos directamente en la consola.
+
+3.  **Panel de Entorno/Historia (arriba a la derecha):**
+
+    -   **Entorno:** Muestra las variables, funciones y objetos de datos que has creado en tu sesión actual de R.
+
+    -   **Historia:** Registra los comandos que has ejecutado anteriormente.
+
+4.  **Panel de Archivos/Gráficos/Ayuda/Visualizador (abajo a la derecha):**
+
+    -   **Archivos:** Explora los archivos y directorios de tu proyecto.
+
+    -   **Gráficos:** Muestra los gráficos que creas en R.
+
+    -   **Ayuda:** Accede a la documentación de R y a los archivos de ayuda de los paquetes instalados.
+
+    -   **Visualizador:** Examina objetos de datos como tablas y marcos de datos en un formato más fácil de leer.
+
+5.  **Barra de herramientas:** Contiene botones para ejecutar código, crear nuevos archivos y acceder a otras opciones.
+
+6.  **Barra de estado:** Muestra información sobre la sesión actual de R.
+
+::: callout-note
+La interfaz de RStudio es altamente personalizable, permitiéndote ordenar los paneles de la manera que prefieras y ajustar la apariencia del entorno para adaptarlo a tu gusto. ¡Sí! Puedes ponerlo en color oscuro y colores cálidos, en lugar del aspecto blanco predeterminado, y así no dañar tus lindos ojitos 👀🌟
+:::
+
+## Conceptos Básicos🔧
+
+Clarifiquemos primero algunos términos que comúnmente decimos en R. Te presento primero los objetos.
+
+::: callout-note
+## Siéntete libre de copiar y pegar el código de este taller en tu propio script. Para ejecutar una línea de código, simplemente sitúate en la línea y teclea CNTRL + Enter, mientras que en Mac es CMD + Enter.
+:::
+
+```{r}
+# Aquí asignamos un valor numérico a un objeto "X"
+x <- 7
+x
+
+# Aquí creamos un vector de números concatenados
+NumVar <- c(5, 3, 4)
+NumVar
+
+# Los vectores pueden estar concatenados con información de tipo texto o caracteres
+CharVar <- c("verde", "amarillo", "verde")
+CharVar
+
+# También utilizamos datos de tipo factor para representar datos categóricos
+factores <- factor(c("femenino", "masculino", "masculino", "femenino"))
+
+# Aunque los factores también pueden tener una lógica ordinal
+factores_ord <- factor(c("bajo", "medio", "alto", "alto"),
+                       ordered = TRUE,
+                       levels = c("bajo", "medio", "alto"))
+
+factores
+factores_ord
+
+# Es posible almacenar valores lógicos que asume solo dos valores posibles
+hola <- c("TRUE", "FALSE", "FALSE", "TRUE")
+hola
+
+# A veces tendremos datos perdidos representados por NA
+vector_con_na <- c(1, 2, NA, 4, 5)
+vector_con_na
+
+# R también es capaz de manejar información de fechas y tiempo (hora)
+fecha <- as.Date("2024-07-24")
+fecha
+
+fecha_hora <- as.POSIXct("2024-07-24 12:34:56")
+fecha_hora
+
+# Oh mira, con el símbolo de gato puedes anotar en el código para que no olvides lo que haces
+```
+
+Como podrás haber intuido:
+
+-   Un vector es una secuencia de datos del mismo tipo.
+-   El nombre creado al objeto es completamente a nuestra elección. Como ves en el ejemplo, puede llamarse `hola` o `CharVar` donde almacenamos la información textual de `verde` y `amarillo`.
+
+En general, trabajarás en R usando un `data.frame`, que significa cuadro de datos. Un data.frame es un objeto que almacena un conjunto de vectores que, a su vez, pueden ser vectores que almacenan información de tipo numérica, factores, entre otros. Comúnmente, los vectores dentro de un `data.frame` se les conoce como variables, las cuales son las columnas que almacenan atributos de la unidad de observación de nuestro conjunto de datos representados en las filas. Por ejemplo, las filas pueden ser estudiantes, escuelas, países, mientras que las columna serán sus atributos (e.g., género).
+
+### Ejercicio 1
+
+En el guión de R que generaste en tu sesión de RStudio, crea un vector llamado `edad` que concatene cinco valores numéricos. También, crea un vector llamado `nombre` que concatene cinco nombres de personas de tipo caracteres.
+
+::: callout-tip
+## Crea los vectores como objetos. Luego, utiliza la función `data.frame()` para almacenarlos.
+:::
+
+Sobre este `data.frame` podrás calcular diferentes estadísticos como un promedio o desviación estándar.
+
+### Ejericicio 2
+
+Crea un objeto llamado `CarTab` empleando los datos `mtcars`, el cual son datos de ejemplo de la revista Motor Trend US de 1974, donde cada fila es un auto y sus diferentes atributos (variables). Luego, sobre el objeto `CarTab`, emplea los comandos `class()`, `str()`, `head()`, y `summary()`. Termina calculando el promedio de la variable `hp` usando la función `mean()`.
+
+::: callout-tip
+## Escribe `CarTab` asignándolo con `<-` y luego escribe `mtcars`. Para usar los comandos, escribe el comando respectivo y entre los paréntesis escribe el nombre de objeto `CarTab`. Para el comando `mean()` tendrás que especificar la columna con `$` del objeto.
+:::
+
+Para ser concisos, hoy aprendiste que puedes manejar diferentes tipos de datos en R:
+
+-   Numéricos: Números enteros y decimales.
+-   Caracteres: Cadenas de texto.
+-   Factores: Datos categóricos ordenados o no ordenados.
+-   Fechas: Información de tiempo en un formato de fecha, que también puede incluir hora.
+-   Lógicos: Valores de verdad (`TRUE` o `FALSE`).
+-   Datos perdidos: Información faltante (`NA`) en un conjunto de datos.
+
+## Soluciones de los Ejercicios
+
+### Ejercicio 1
+
+```{r}
+edad <- c(40, 5, 16, 28, 32)
+nombre <- c("Daniel", "Mariela", "Miguel", "Pablo", "Javiera")
+misdatos <- data.frame(nombre, edad)
+misdatos
+```
+
+### Ejercicio 2
+
+::: callout-important
+## Para citar este archivo Quarto, por favor, considera este formato: Montero, M. (2024). Metodología Cuantitativa II 2024 \[Repositorio\]. GitHub. URL
+:::
