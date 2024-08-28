@@ -1,0 +1,227 @@
+---
+title: "Taller 3a"
+format: html
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+![](logo-ie-ciae.gif){fig-align="left" width="200"}
+
+# Análisis de Regresión Lineal 📈
+
+En esta sesión, aprenderás a realizar un análisis de regresión lineal simple y múltiple utilizando datos de PISA 2009 para Chile. Exploraremos cómo evaluar los supuestos del modelo de regresión, interpretar los resultados y visualizar las relaciones entre las variables. También, discutiremos cómo comparar diferentes modelos de regresión y cómo interpretar la importancia relativa de los predictores.
+
+Al igual que en las sesiones previas, es importante comenzar estableciendo el directorio de trabajo, la cual refiere a la carpeta de tu computador donde se encuentran los datos que vamos a analizar.
+
+```{r}
+getwd()
+setwd("G:/Mi unidad/Teaching/Metodología Cuantitativa II 2024/Sesión 3") # Cambia esta línea de código por tu directorio de trabajo
+```
+
+## Instalar y Cargar Paquetes
+
+Aprenderemos una forma alternativa de instalar y cargar paquetes usando `pacman`. El código a continuación verifica si el paquete `pacman` está instalado y, si no lo está, lo instala. Luego, instala y carga todos los paquetes mencionados utilizando `pacman::p_load`, que instala y carga automáticamente cualquier paquete que no esté ya instalado. Siempre puedes también ocupar las funciones de R base de `install.packages()` y `library()`, aunque como ves esta es una alternativa más fácil de leer, especialente cuando trabajas con muchos paquetes.
+
+```{r}
+if(!require(pacman)) install.packages("pacman")
+pacman::p_load(haven,
+               ggplot2,
+               gmodels,
+               psych,
+               corrplot,
+               lmtest,
+               broom,
+               relaimpo,
+               visreg,
+               performance,
+               see,
+               patchwork,
+               knitr,
+               car)
+```
+
+## Importar Datos
+
+A continuación, importamos los datos de PISA 2009 para Chile. Utilizaremos el paquete `haven` para manejar los archivos SPSS (.sav).
+
+```{r}
+pisa2009_chl <- read_sav("pisa2009_chl.sav")
+```
+
+## Exploración Inicial de los Datos
+
+Antes de proceder al análisis, es importante entender la estructura y el contenido del conjunto de datos.
+
+```{r}
+class(pisa2009_chl)    # Verifica la clase del objeto 'pisa2009_chl'
+head(pisa2009_chl)     # Muestra los primeros 6 casos de la base de datos
+names(pisa2009_chl)    # Lista los nombres de las variables
+dim(pisa2009_chl)      # Muestra el número de variables y casos
+summary(pisa2009_chl)  # Proporciona un resumen estadístico para cada variable
+str(pisa2009_chl)      # Muestra la estructura interna del data frame
+```
+
+## Análisis Descriptivo
+
+### Estadísticos Descriptivos
+
+Comenzamos con el análisis descriptivo del Índice de Estatus Económico, Social y Cultural (ESCS, por sus siglas en inglés en PISA) o simplemente estatus socioeconómico del estudiantes (`ses`) y del puntaje en matemáticas (`math`).
+
+```{r}
+pisa2009_chl$ses <- as.numeric(pisa2009_chl$ses)
+summary(pisa2009_chl$ses)  # Resumen descriptivo de SES
+sd(pisa2009_chl$ses, na.rm = TRUE)  # Desviación estándar de SES
+var(pisa2009_chl$ses, na.rm = TRUE)  # Varianza de SES
+describe(pisa2009_chl$ses)
+
+summary(pisa2009_chl$math)  # Resumen descriptivo de math
+sd(pisa2009_chl$math, na.rm = TRUE)  # Desviación estándar de math
+var(pisa2009_chl$math, na.rm = TRUE)  # Varianza de math
+describe(pisa2009_chl$math)
+```
+
+### Visualización de la Distribución de los Datos
+
+Para entender mejor la distribución de los datos, generamos varios gráficos usando el paquete `ggplot2`.
+
+```{r}
+# Histograma de SES
+ggplot(pisa2009_chl, aes(x = ses)) +
+  geom_histogram()
+
+# Gráfico de Densidad de SES
+ggplot(pisa2009_chl, aes(x = ses)) +
+  geom_density()
+
+# Histograma y Densidad combinados
+ggplot(pisa2009_chl, aes(x = ses)) +
+  geom_histogram(aes(y = ..density..)) +
+  geom_density()
+
+# Histograma de Math
+ggplot(pisa2009_chl, aes(x = math)) +
+  geom_histogram()
+
+# Gráfico de Densidad de Math
+ggplot(pisa2009_chl, aes(x = math)) +
+  geom_density()
+
+# Histograma y Densidad combinados
+ggplot(pisa2009_chl, aes(x = math)) +
+  geom_histogram(aes(y = ..density..)) +
+  geom_density()
+```
+
+## Análisis de Regresión Lineal
+
+### Regresión Lineal Simple
+
+Realizaremos una regresión lineal simple para predecir el puntaje en matemáticas (math) utilizando el índice de estatus socioeconómico como predictor.
+
+```{r}
+m1 <- lm(math ~ ses, data = pisa2009_chl)
+summary(m1)
+```
+
+#### Evaluación de los Supuestos del Modelo de Regresión
+
+Es fundamental evaluar los supuestos estadísticos del modelo de regresión para asegurarnos de que los resultados sean válidos.
+
+-   **Supuesto de Linealidad**
+El supuesto de linealidad indica que la relación entre el predictor (ses) y la variable dependiente (math) es lineal. Para evaluar la linealidad, podemos utilizar un diagrama de dispersión (scatter plot) que muestre la relación entre la variable predictora `ses` (Índice de Estatus Económico, Social y Cultural) y la variable dependiente `math` (Puntaje en Matemáticas).
+
+```{r}
+ggplot(pisa2009_chl) +
+  aes(x = ses, y = math) +
+  geom_point(colour = "#0c4c8a") +
+  theme_minimal()
+```
+
+*Interpretación:* Si los puntos en el gráfico muestran una tendencia a alinearse en una línea recta (ascendente o descendente), podemos asumir que la relación es aproximadamente lineal. Si los puntos siguen una forma curvilínea, la relación podría no ser lineal, lo que sugeriría la necesidad de transformar las variables o considerar un modelo diferente.
+
+![](correlation_examples2.png){fig-align="left" width="400"}
+
+-   **Supuesto de Normalidad de los Residuos**
+El supuesto de normalidad de los residuos indica que los errores del modelo (es decir, las diferencias entre los valores observados y los valores predichos) deben distribuirse normalmente. Esto es crucial para validar las pruebas de significancia estadística (prueba **t** de Student) que se utiliza en la regresión. Para evaluar este supuesto, utilizamos varias aproximaciones:
+
+    -   Histograma de los residuos: Permite observar la distribución de los errores.
+    -   Gráfico de densidad: Proporciona una visualización suave de la distribución de los residuos.
+    -   Gráfico Cuantil-Cuantil (Q-Q plot): Compara la distribución de los residuos con una distribución normal teórica.
+    -   Prueba de Shapiro-Wilk: Prueba estadística que evalúa la normalidad de los residuos.
+
+```{r}
+hist(m1$residuals, freq = FALSE)
+plot(density(m1$residuals))
+qqnorm(m1$residuals, main = 'Gráfico Cuantil-Cuantil')
+qqline(m1$residuals)
+shapiro.test(m1$residuals[0:5000])
+```
+
+-   **Supuesto de Homocedasticidad**
+El supuesto de homocedasticidad establece que la varianza de los residuos es constante a lo largo de todos los valores de la variable predictora. Esto significa que los errores del modelo no deberían mostrar patrones sistemáticos cuando se grafican contra los valores predichos. La falta de homocedasticidad, conocida como heterocedasticidad, puede llevar a estimaciones sesgadas de los coeficientes de regresión.
+
+Para evaluar este supuesto, utilizamos el test de Breusch-Pagan, que es una prueba estadística que evalúa la presencia de heterocedasticidad. Si el test de Breusch-Pagan indica Un valor *p* > .05, entonces este sugiere que no se puede rechazar la hipótesis nula de homocedasticidad, indicando que la varianza de los residuos es constante. Si el valor *p* es menor a 0.05, hay evidencia de heterocedasticidad, lo que podría requerir la transformación de variables o el uso de un modelo robusto.
+
+```{r}
+bptest(math ~ ses, data = pisa2009_chl)
+```
+
+### Regresión Lineal Múltiple
+A continuación, realizamos una regresión lineal múltiple, agregando más predictores al modelo.
+
+```{r}
+# Recodificación de la variable sexo
+pisa2009_chl$female <- as.numeric(pisa2009_chl$sex)
+pisa2009_chl$female[pisa2009_chl$female == 0] <- 0
+pisa2009_chl$female[pisa2009_chl$female == 1] <- 1
+
+m2 <- lm(math ~ ses + female + read + scie, data = pisa2009_chl)
+summary(m2)
+```
+
+-   **Evaluación de la Multicolinealidad**
+En este caso como tenemos 2 o más predictores, debemos evaluar la multicolinealidad en el modelo. La multicolinealidad ocurre cuando dos o más variables predictoras en un modelo de regresión están altamente correlacionadas entre sí. Esto puede ser problemático porque impide la estimación de un modelo de regresión. Para ello, observamos las correlaciones entre los predictores y calculamos el factor de inflación de la varianza (VIF).
+
+Podemos evaluar la presencia de multicolinealidad en un modelo de regresión generando una matriz de correlación de los predictores puede dar una idea inicial sobre las relaciones bivariadas entre ellos. Observamos si hay correlaciones altas (generalmente **r** > 0.8 o < -0.8) entre dos variables predictoras pueden ser una indicador de multicolinealidad.
+
+```{r}
+data <- pisa2009_chl[, c("math", "ses", "read", "scie")]
+correlaciones <- cor(data, use = "complete.obs")
+
+# Visualizar la matriz de correlación usando un correlograma
+corrplot(correlaciones, method = 'circle', type = 'lower', insig = 'blank',
+         addCoef.col = 'black', number.cex = 0.8, order = 'AOE', diag = FALSE)
+```
+
+También, podemos estimar el factor de inflación de la varianza (VIF). El VIF mide cuánto la varianza de un coeficiente de regresión está inflada debido a la multicolinealidad. Un VIF de 1 indica que no hay correlación entre la variable predictora y las demás variables predictoras. Un VIF entre 1 y 5 sugiere una correlación moderada pero aceptable. Un VIF mayor que 5 (algunos usan el umbral de 10) indica una alta multicolinealidad que podría ser problemática.
+
+```{r}
+kable(vif(m2), digits = 2)
+```
+
+Interpretación: Si alguna de las variables en el modelo tiene un VIF alto (por ejemplo, mayor a 5), esto indica que la variable está altamente correlacionada con una o más de las otras variables predictoras, lo que sugiere multicolinealidad.
+
+**¿Qué hacer si hay multicolinealidad?**
+-   Eliminar una de las variables correlacionadas: Si dos variables están altamente correlacionadas, podrías considerar eliminar una de ellas para reducir la multicolinealidad.
+-   Transformar las variables: En algunos casos, la transformación de las variables (por ejemplo, usando logaritmos o diferencias) puede reducir la multicolinealidad.
+
+Esta función obtiene gráficos de diagnóstico para chequear supuestos.
+
+```{r}
+check_model(m1)
+```
+
+**Comparación de Modelos**
+Finalmente, comparamos los dos modelos de regresión para determinar cuál ajusta mejor los datos.
+
+```{r}
+anova(m1, m2)
+```
+
+**Importancia Relativa de los Predictores**
+Calculamos la importancia relativa de cada predictor en el modelo de regresión múltiple.
+
+```{r}
+calc.relimp(m2, type = c("lmg", "last", "first", "pratt"), rela = TRUE)
+```

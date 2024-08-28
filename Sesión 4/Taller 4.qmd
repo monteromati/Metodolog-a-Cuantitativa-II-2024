@@ -1,0 +1,65 @@
+---
+title: "Taller 4"
+date: "`r format(Sys.Date(), '%d %B %Y')`"
+format: html
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+![](logo-ie-ciae.gif){fig-align="left" width="200"}
+
+# Taller de Análisis de Moderación y Mediación 📈
+
+En este taller, aprenderemos a realizar análisis de moderación y mediación. Estos tipos de análisis son fundamentales en la investigación educacional para comprender cómo y cuándo ciertas variables afectan resultados educativos. A lo largo del taller, trabajaremos con datos SIMCE 2018 de segundo medio y exploraremos cómo el género de los estudiantes puede moderar la relación entre el autoconcepto en matemáticas y rendimiento, y cómo el ingreso familiar se asocia con el rendimiento en lenguaje a través de las expectativas de los padres.
+
+## Instalación y Carga de Librerías
+
+Para empezar, es necesario instalar y cargar algunas librerías que utilizaremos en este taller. Solo utilizaremos `ggplot2` que es una de las librerías más populares para la visualización de datos en R, mientras que las demás funciones que utilizaremos ya vienen en el paquete base de R.
+
+```{r}
+install.packages("ggplot2")
+library(ggplot2)
+```
+
+## Configuración del Directorio de Trabajo
+Como parte de la rutina de análisis de datos, establecemos el directorio.
+
+```{r}
+setwd("C:/Users/lcort/Downloads/")
+```
+
+## Carga de Datos
+Trabajaremos con varias bases de datos del SIMCE 2018. A continuación, cargamos los datos de los puntajes de los estudiantes, sus respuestas al cuestionario, y las respuestas de los padres/apoderados al cuestionario SIMCE.
+
+```{r}
+# Cargar datos de puntajes SIMCE a nivel de estudiantes
+palu <- read.table("simce2m2018_alu_privada_final-SEG.txt", header = TRUE, sep = "|", dec = ".")
+
+# Cargar datos del cuestionario de estudiantes
+cest <- read.table("simce2m2018_cest_privada_final-SEG.txt", header = TRUE, sep = "|", dec = ".")
+
+# Cargar datos del cuestionario de padres/apoderados
+cpad <- read.table("simce2m2018_cpad_privada_final-SEG.txt", header = TRUE, sep = "|", dec = ".")
+```
+
+## Fusión de Bases de Datos
+Para realizar nuestros análisis, necesitamos combinar las bases de datos en una sola, utilizando la variable `idalumno` como llave para la fusión. Este tipo de procedimientos es muy común en preparación de datos y permite trabajar con múltiples bases de datos que contengan una variable de identificador en común que individualiza la unidad de observación de los datos. En este caso son los estudiantes, quienes son la unidad de observación y únicos en tanto no se repiten a lo largo de las filas.
+
+```{r}
+total <- merge(palu, cest, by = "idalumno", all = TRUE)
+```
+
+### Carga y Fusión Adicional de Datos
+También cargamos y fusionamos datos del cuestionario de padres/apoderados para completar nuestra base de datos.
+
+```{r}
+total <- merge(total, cpad, by = "idalumno", all = TRUE)
+```
+
+## Exploración de la Base de Datos
+Siempre es útil revisar la estructura de la base de datos después de fusionar para asegurarnos de que todo esté en orden.
+
+```{r}
+str(total)
+```

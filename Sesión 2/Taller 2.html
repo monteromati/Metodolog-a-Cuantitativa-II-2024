@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.43">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Taller 2</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Taller 2_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Taller 2_files/libs/quarto-html/quarto.js"></script>
+<script src="Taller 2_files/libs/quarto-html/popper.min.js"></script>
+<script src="Taller 2_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Taller 2_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Taller 2_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Taller 2_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Taller 2_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Taller 2_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Taller 2_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Taller 2</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><img src="logo-ie-ciae.gif" class="img-fluid quarto-figure quarto-figure-left figure-img" width="200"></p>
+</figure>
+</div>
+<section id="análisis-inferencial-bivariado-con-datos-pisa-2009" class="level1">
+<h1>Análisis Inferencial Bivariado con Datos PISA 2009 🏫</h1>
+<p>En este taller, nos enfocaremos en realizar análisis inferenciales bivariados utilizando datos de PISA 2009 para Chile. A lo largo de esta sesión, aprenderás a aplicar diversas pruebas estadísticas, como la prueba de Chi-Cuadrado, <em>U</em> de Mann-Whitney, la <em>H</em> de Kruskal-Wallis, la prueba <em>t</em> para muestras independientes, ANOVA, y las correlaciones (<em>r</em>) de Spearman y Pearson. Además, explorarás cómo interpretar y reportar los resultados de estas pruebas, apoyándote en visualizaciones gráficas que facilitarán la comprensión de las relaciones entre variables.</p>
+<section id="instalación-de-paquetes" class="level2">
+<h2 class="anchored" data-anchor-id="instalación-de-paquetes">Instalación de Paquetes</h2>
+<p>Comenzamos instalando los paquetes necesarios para esta sesión. Estos paquetes nos permitirán importar datos en formato SPSS, generar gráficos, calcular pruebas estadísticas como Chi-Cuadrado, y obtener estadísticas descriptivas detalladas.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">repos =</span> <span class="fu">c</span>(<span class="at">CRAN =</span> <span class="st">"https://cran.rstudio.com/"</span>))</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"haven"</span>)    <span class="co"># Paquete para importar datos en formato SPSS</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>package 'haven' successfully unpacked and MD5 sums checked
+
+The downloaded binary packages are in
+    C:\Users\matia\AppData\Local\Temp\RtmpID3dS7\downloaded_packages</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"ggplot2"</span>)  <span class="co"># Paquete para generar gráficos</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>package 'ggplot2' successfully unpacked and MD5 sums checked
+
+The downloaded binary packages are in
+    C:\Users\matia\AppData\Local\Temp\RtmpID3dS7\downloaded_packages</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"gmodels"</span>)  <span class="co"># Paquete que contiene la función CrossTable() para pruebas de Chi-Cuadrado</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>package 'gmodels' successfully unpacked and MD5 sums checked
+
+The downloaded binary packages are in
+    C:\Users\matia\AppData\Local\Temp\RtmpID3dS7\downloaded_packages</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"psych"</span>)    <span class="co"># Paquete para obtener estadísticos descriptivos más detallados</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>package 'psych' successfully unpacked and MD5 sums checked
+
+The downloaded binary packages are in
+    C:\Users\matia\AppData\Local\Temp\RtmpID3dS7\downloaded_packages</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"pastecs"</span>)  <span class="co"># Paquete para análisis estadístico básico</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>package 'pastecs' successfully unpacked and MD5 sums checked
+
+The downloaded binary packages are in
+    C:\Users\matia\AppData\Local\Temp\RtmpID3dS7\downloaded_packages</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"effsize"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>package 'effsize' successfully unpacked and MD5 sums checked
+
+The downloaded binary packages are in
+    C:\Users\matia\AppData\Local\Temp\RtmpID3dS7\downloaded_packages</code></pre>
+</div>
+</div>
+</section>
+<section id="carga-de-bibliotecas" class="level2">
+<h2 class="anchored" data-anchor-id="carga-de-bibliotecas">Carga de Bibliotecas</h2>
+<p>A continuación, cargamos las bibliotecas de los paquetes que acabamos de instalar para hacer uso de sus funciones en el análisis.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gmodels)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pastecs)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(effsize)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="configuración-del-directorio-de-trabajo" class="level2">
+<h2 class="anchored" data-anchor-id="configuración-del-directorio-de-trabajo">Configuración del Directorio de Trabajo</h2>
+<p>Es importante definir el directorio de trabajo, que es la ubicación donde se encuentran los datos que vamos a analizar. Primero verificamos el directorio actual y luego lo cambiamos al directorio donde se encuentran los datos.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getwd</span>()  <span class="co"># Verifica el directorio de trabajo actual</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "G:/Mi unidad/Teaching/Metodología Cuantitativa II 2024/Sesión 2"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cambia el directorio de trabajo al lugar donde se guardaron los datos</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"G:/Mi unidad/Teaching/Metodología Cuantitativa II 2024/Sesión 2"</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">getwd</span>()  <span class="co"># Confirma que el directorio de trabajo ha cambiado</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "G:/Mi unidad/Teaching/Metodología Cuantitativa II 2024/Sesión 2"</code></pre>
+</div>
+</div>
+</section>
+<section id="importación-de-datos" class="level2">
+<h2 class="anchored" data-anchor-id="importación-de-datos">Importación de Datos</h2>
+<p>En esta sección, importamos los datos del archivo SPSS (.sav) a R utilizando el paquete <code>haven</code>, que convierte automáticamente los datos en un data frame para facilitar su manipulación y análisis.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>pisa2009_chl <span class="ot">&lt;-</span> <span class="fu">read_sav</span>(<span class="st">"pisa2009_chl.sav"</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(pisa2009_chl)  <span class="co"># Visualiza la base de datos en una nueva ventana</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="exploración-inicial-de-los-datos" class="level2">
+<h2 class="anchored" data-anchor-id="exploración-inicial-de-los-datos">Exploración Inicial de los Datos</h2>
+<p>Antes de realizar análisis estadísticos, es fundamental entender la estructura y contenido del conjunto de datos. Exploremos entonces brevemente el data frame, observando su clase, los primeros registros, los nombres de las variables, y obteniendo un resumen descriptivo básico.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(pisa2009_chl)    <span class="co"># Verifica la clase del objeto 'pisa2009_chl'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "tbl_df"     "tbl"        "data.frame"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pisa2009_chl)     <span class="co"># Muestra los primeros 6 casos de la base de datos</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 13
+  ctry      school id    sex        ses       sesj     math  read  scie type    
+  &lt;chr+lbl&gt; &lt;chr&gt;  &lt;chr&gt; &lt;dbl+lbl&gt;  &lt;dbl+lbl&gt; &lt;dbl+l&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl+lb&gt;
+1 152 [CHL] 00001  00003 1 [Female] -0.291    -1.45    414.  534.  480. NA      
+2 152 [CHL] 00001  00002 1 [Female] -0.798    -1.45    347.  396.  414. NA      
+3 152 [CHL] 00001  00005 1 [Female] -2.55     -1.45    391.  457.  392. NA      
+4 152 [CHL] 00001  00001 1 [Female] -2.31     -1.45    417.  451.  408. NA      
+5 152 [CHL] 00001  00004 1 [Female] -1.32     -1.45    422.  460.  438. NA      
+6 152 [CHL] 00002  00016 1 [Female] -0.266    -0.674   403.  491.  495.  2 [Pri…
+# ℹ 3 more variables: public &lt;dbl+lbl&gt;, subv &lt;dbl+lbl&gt;, priv &lt;dbl+lbl&gt;</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(pisa2009_chl)    <span class="co"># Lista los nombres de las variables</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "ctry"   "school" "id"     "sex"    "ses"    "sesj"   "math"   "read"  
+ [9] "scie"   "type"   "public" "subv"   "priv"  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(pisa2009_chl)      <span class="co"># Muestra el número de variables y casos</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5669   13</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pisa2009_chl)  <span class="co"># Proporciona un resumen estadístico para cada variable</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     ctry              school               id                 sex        
+ Length:5669        Length:5669        Length:5669        Min.   :0.0000  
+ Class :character   Class :character   Class :character   1st Qu.:0.0000  
+ Mode  :character   Mode  :character   Mode  :character   Median :0.0000  
+                                                          Mean   :0.4937  
+                                                          3rd Qu.:1.0000  
+                                                          Max.   :1.0000  
+                                                                          
+      ses               sesj                math            read      
+ Min.   :-4.2451   Min.   :-2.680900   Min.   :194.7   Min.   :145.8  
+ 1st Qu.:-1.3480   1st Qu.:-1.089056   1st Qu.:370.0   1st Qu.:397.2  
+ Median :-0.5661   Median :-0.770568   Median :421.3   Median :455.2  
+ Mean   :-0.5056   Mean   :-0.509685   Mean   :424.8   Mean   :453.5  
+ 3rd Qu.: 0.3615   3rd Qu.: 0.009215   3rd Qu.:477.6   3rd Qu.:509.3  
+ Max.   : 2.8814   Max.   : 1.538684   Max.   :782.1   Max.   :711.0  
+ NA's   :89        NA's   :1                                          
+      scie            type           public            subv       
+ Min.   :144.3   Min.   :1.000   Min.   :0.0000   Min.   :0.0000  
+ 1st Qu.:394.7   1st Qu.:1.000   1st Qu.:0.0000   1st Qu.:0.0000  
+ Median :450.1   Median :2.000   Median :0.0000   Median :0.0000  
+ Mean   :451.6   Mean   :1.559   Mean   :0.4778   Mean   :0.4852  
+ 3rd Qu.:505.2   3rd Qu.:2.000   3rd Qu.:1.0000   3rd Qu.:1.0000  
+ Max.   :730.8   Max.   :3.000   Max.   :1.0000   Max.   :1.0000  
+                 NA's   :1188    NA's   :1188     NA's   :1188    
+      priv      
+ Min.   :0.000  
+ 1st Qu.:0.000  
+ Median :0.000  
+ Mean   :0.037  
+ 3rd Qu.:0.000  
+ Max.   :1.000  
+ NA's   :1188   </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(pisa2009_chl)      <span class="co"># Muestra la estructura interna del data frame</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tibble [5,669 × 13] (S3: tbl_df/tbl/data.frame)
+ $ ctry  : chr+lbl [1:5669] 152, 152, 152, 152, 152, 152, 152, 152, 152, 152, 152...
+   ..@ label        : chr "Country code ISO 3-digit"
+   ..@ format.spss  : chr "A3"
+   ..@ display_width: int 9
+   ..@ labels       : Named chr "152"
+   .. ..- attr(*, "names")= chr "CHL"
+ $ school: chr [1:5669] "00001" "00001" "00001" "00001" ...
+  ..- attr(*, "label")= chr "School ID 5-digit"
+  ..- attr(*, "format.spss")= chr "A5"
+  ..- attr(*, "display_width")= int 10
+ $ id    : chr [1:5669] "00003" "00002" "00005" "00001" ...
+  ..- attr(*, "label")= chr "Student ID 5-digit"
+  ..- attr(*, "format.spss")= chr "A5"
+  ..- attr(*, "display_width")= int 9
+ $ sex   : dbl+lbl [1:5669] 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,...
+   ..@ label        : chr "Sex"
+   ..@ format.spss  : chr "F1.0"
+   ..@ display_width: int 9
+   ..@ labels       : Named num [1:2] 0 1
+   .. ..- attr(*, "names")= chr [1:2] "Male" "Female"
+ $ ses   : dbl+lbl [1:5669] -0.2907, -0.7978, -2.5471, -2.3071, -1.3214, -0.2655,...
+   ..@ label        : chr "Index of economic, social and cultural status (WLE)"
+   ..@ format.spss  : chr "F8.2"
+   ..@ display_width: int 12
+   ..@ labels       : Named num -999
+   .. ..- attr(*, "names")= chr "missing"
+ $ sesj  : dbl+lbl [1:5669] -1.453, -1.453, -1.453, -1.453, -1.453, -0.674, -0.67...
+   ..@ label        : chr "school ses"
+   ..@ format.spss  : chr "F8.2"
+   ..@ display_width: int 10
+   ..@ labels       : Named num -999
+   .. ..- attr(*, "names")= chr "missing"
+ $ math  : num [1:5669] 414 347 391 417 422 ...
+  ..- attr(*, "label")= chr "Plausible value in math"
+  ..- attr(*, "format.spss")= chr "F8.2"
+  ..- attr(*, "display_width")= int 11
+ $ read  : num [1:5669] 534 396 457 451 460 ...
+  ..- attr(*, "label")= chr "Plausible value in reading"
+  ..- attr(*, "format.spss")= chr "F8.1"
+  ..- attr(*, "display_width")= int 11
+ $ scie  : num [1:5669] 480 414 392 408 438 ...
+  ..- attr(*, "label")= chr "Plausible value in science"
+  ..- attr(*, "format.spss")= chr "F8.2"
+  ..- attr(*, "display_width")= int 11
+ $ type  : dbl+lbl [1:5669] NA, NA, NA, NA, NA,  2,  2,  2,  2,  2,  2,  2,  2,  ...
+   ..@ label        : chr "School Type"
+   ..@ format.spss  : chr "F1.0"
+   ..@ display_width: int 9
+   ..@ labels       : Named num [1:4] -999 1 2 3
+   .. ..- attr(*, "names")= chr [1:4] "missing" "Public" "Private government-dependent" "Private independent"
+ $ public: dbl+lbl [1:5669] NA, NA, NA, NA, NA,  0,  0,  0,  0,  0,  0,  0,  0,  ...
+   ..@ label        : chr "public schools = 1, else = 0"
+   ..@ format.spss  : chr "F8.2"
+   ..@ display_width: int 10
+   ..@ labels       : Named num [1:3] -999 0 1
+   .. ..- attr(*, "names")= chr [1:3] "missing" "else" "public"
+ $ subv  : dbl+lbl [1:5669] NA, NA, NA, NA, NA,  1,  1,  1,  1,  1,  1,  1,  1,  ...
+   ..@ label        : chr "subv schools = 1, else = 0"
+   ..@ format.spss  : chr "F8.2"
+   ..@ display_width: int 10
+   ..@ labels       : Named num [1:3] -999 0 1
+   .. ..- attr(*, "names")= chr [1:3] "missing" "else" "subv"
+ $ priv  : dbl+lbl [1:5669] NA, NA, NA, NA, NA,  0,  0,  0,  0,  0,  0,  0,  0,  ...
+   ..@ label        : chr "priv schools = 1, else = 0"
+   ..@ format.spss  : chr "F8.2"
+   ..@ display_width: int 10
+   ..@ labels       : Named num [1:3] -999 0 1
+   .. ..- attr(*, "names")= chr [1:3] "missing" "else" "priv"</code></pre>
+</div>
+</div>
+</section>
+<section id="prueba-de-chi-cuadrado-χ2" class="level2">
+<h2 class="anchored" data-anchor-id="prueba-de-chi-cuadrado-χ2">Prueba de Chi-Cuadrado (χ2)</h2>
+<p>La prueba de Chi-Cuadrado (χ2) es útil para evaluar si existe una asociación estadísticamente significativa entre dos variables categóricas. Así, inferimos estadísticamente si dicha asociación existe en la población objetivo bajo un nivel de confianza (habitualmente con un 95%). En esta sección, analizaremos la relación entre el género de los estudiantes y el tipo de establecimiento en el que estudian.</p>
+<section id="análisis-descriptivo-para-variables-categóricas" class="level3">
+<h3 class="anchored" data-anchor-id="análisis-descriptivo-para-variables-categóricas">Análisis Descriptivo para Variables Categóricas</h3>
+<p>Primero, generamos tablas de contingencia que muestran la distribución de las variables categóricas de interés. Estas tablas permiten observar la frecuencia y proporción de cada categoría, tanto de manera individual como cruzada entre dos variables.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tabla de contingencia para una variable categórica</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(pisa2009_chl<span class="sc">$</span>sex)  <span class="co"># Distribución de género</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+   0    1 
+2870 2799 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(pisa2009_chl<span class="sc">$</span>type) <span class="co"># Distribución por tipo de establecimiento</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+   1    2    3 
+2141 2174  166 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tabla de contingencia para dos variables categóricas</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(pisa2009_chl<span class="sc">$</span>type, pisa2009_chl<span class="sc">$</span>sex)  <span class="co"># Distribución conjunta de género y tipo de establecimiento</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   
+       0    1
+  1 1113 1028
+  2 1055 1119
+  3   67   99</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tabla de porcentajes para variables categóricas por grupo de interés</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="co"># "margin = 2" entrega las proporciones de la distribución condicional de la variable 1 según la variable 2</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="fu">prop.table</span>(<span class="fu">table</span>(pisa2009_chl<span class="sc">$</span>type, pisa2009_chl<span class="sc">$</span>sex), <span class="at">margin =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   
+             0          1
+  1 0.49798658 0.45770258
+  2 0.47203579 0.49821906
+  3 0.02997763 0.04407836</code></pre>
+</div>
+</div>
+</section>
+<section id="visualización-de-variables-categóricas" class="level3">
+<h3 class="anchored" data-anchor-id="visualización-de-variables-categóricas">Visualización de Variables Categóricas</h3>
+<p>Para visualizar la distribución de las variables categóricas, generamos gráficos de barras y gráficos circulares.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de Barras para la variable 'sex'</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>plot <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">table</span>(pisa2009_chl<span class="sc">$</span>sex))</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(plot, <span class="fu">aes</span>(<span class="at">x =</span> Var1, <span class="at">y =</span> Freq)) <span class="sc">+</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Taller-2_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de Barras para la variable 'type'</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>plot <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">table</span>(pisa2009_chl<span class="sc">$</span>type))</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(plot, <span class="fu">aes</span>(<span class="at">x =</span> Var1, <span class="at">y =</span> Freq)) <span class="sc">+</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Taller-2_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico Circular para la variable 'sex'</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>plot <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">table</span>(pisa2009_chl<span class="sc">$</span>sex))</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(plot, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> Freq, <span class="at">fill =</span> Var1)) <span class="sc">+</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_polar</span>(<span class="st">"y"</span>, <span class="at">start =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Taller-2_files/figure-html/unnamed-chunk-7-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico Circular para la variable 'type'</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>plot <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">table</span>(pisa2009_chl<span class="sc">$</span>type))</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(plot, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> Freq, <span class="at">fill =</span> Var1)) <span class="sc">+</span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_polar</span>(<span class="st">"y"</span>, <span class="at">start =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Taller-2_files/figure-html/unnamed-chunk-7-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="prueba-de-chi-cuadrado-usando-crosstable" class="level3">
+<h3 class="anchored" data-anchor-id="prueba-de-chi-cuadrado-usando-crosstable">Prueba de Chi-Cuadrado usando <code>CrossTable</code></h3>
+<p>Veamos si existe una asociación entre el género de los estudiantes y el tipo de establecimiento en el que estudian.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generación de la tabla de contingencia con la función CrossTable</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>tabla <span class="ot">&lt;-</span> <span class="fu">CrossTable</span>(pisa2009_chl<span class="sc">$</span>type, pisa2009_chl<span class="sc">$</span>sex, <span class="at">prop.chisq =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ 
+   Cell Contents
+|-------------------------|
+|                       N |
+|           N / Row Total |
+|           N / Col Total |
+|         N / Table Total |
+|-------------------------|
+
+ 
+Total Observations in Table:  4481 
+
+ 
+                  | pisa2009_chl$sex 
+pisa2009_chl$type |         0 |         1 | Row Total | 
+------------------|-----------|-----------|-----------|
+                1 |      1113 |      1028 |      2141 | 
+                  |     0.520 |     0.480 |     0.478 | 
+                  |     0.498 |     0.458 |           | 
+                  |     0.248 |     0.229 |           | 
+------------------|-----------|-----------|-----------|
+                2 |      1055 |      1119 |      2174 | 
+                  |     0.485 |     0.515 |     0.485 | 
+                  |     0.472 |     0.498 |           | 
+                  |     0.235 |     0.250 |           | 
+------------------|-----------|-----------|-----------|
+                3 |        67 |        99 |       166 | 
+                  |     0.404 |     0.596 |     0.037 | 
+                  |     0.030 |     0.044 |           | 
+                  |     0.015 |     0.022 |           | 
+------------------|-----------|-----------|-----------|
+     Column Total |      2235 |      2246 |      4481 | 
+                  |     0.499 |     0.501 |           | 
+------------------|-----------|-----------|-----------|
+
+ </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Guardamos las proporciones por columna</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>propcol <span class="ot">&lt;-</span> tabla<span class="sc">$</span>prop.col</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de Barras Condicional: Visualización de las proporciones condicionales</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(propcol, <span class="at">beside =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> <span class="fu">rainbow</span>(<span class="dv">3</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">'topright'</span>, <span class="fu">c</span>(<span class="st">"Public"</span>, <span class="st">"Private government-dependent"</span>, <span class="st">"Private independent"</span>), <span class="at">pch =</span> <span class="dv">15</span>, <span class="at">col =</span> <span class="fu">rainbow</span>(<span class="dv">3</span>), <span class="at">cex =</span> <span class="fl">0.7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Taller-2_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>En este paso, visualizamos las proporciones condicionales de la variable <code>type</code> por cada categoría de la variable <code>sex</code> para finalmente estimar un chi-cuadrado usando <code>CrossTable</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">CrossTable</span>(pisa2009_chl<span class="sc">$</span>type, pisa2009_chl<span class="sc">$</span>sex, <span class="at">prop.chisq =</span> <span class="cn">FALSE</span>, <span class="at">chisq =</span> <span class="cn">TRUE</span>, <span class="at">expected =</span> <span class="cn">TRUE</span>, <span class="at">sresid =</span> <span class="cn">TRUE</span>, <span class="at">format =</span> <span class="st">"SPSS"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+   Cell Contents
+|-------------------------|
+|                   Count |
+|         Expected Values |
+|             Row Percent |
+|          Column Percent |
+|           Total Percent |
+|            Std Residual |
+|-------------------------|
+
+Total Observations in Table:  4481 
+
+                  | pisa2009_chl$sex 
+pisa2009_chl$type |        0  |        1  | Row Total | 
+------------------|-----------|-----------|-----------|
+                1 |     1113  |     1028  |     2141  | 
+                  | 1067.872  | 1073.128  |           | 
+                  |   51.985% |   48.015% |   47.780% | 
+                  |   49.799% |   45.770% |           | 
+                  |   24.838% |   22.941% |           | 
+                  |    1.381  |   -1.378  |           | 
+------------------|-----------|-----------|-----------|
+                2 |     1055  |     1119  |     2174  | 
+                  | 1084.332  | 1089.668  |           | 
+                  |   48.528% |   51.472% |   48.516% | 
+                  |   47.204% |   49.822% |           | 
+                  |   23.544% |   24.972% |           | 
+                  |   -0.891  |    0.889  |           | 
+------------------|-----------|-----------|-----------|
+                3 |       67  |       99  |      166  | 
+                  |   82.796  |   83.204  |           | 
+                  |   40.361% |   59.639% |    3.705% | 
+                  |    2.998% |    4.408% |           | 
+                  |    1.495% |    2.209% |           | 
+                  |   -1.736  |    1.732  |           | 
+------------------|-----------|-----------|-----------|
+     Column Total |     2235  |     2246  |     4481  | 
+                  |   49.877% |   50.123% |           | 
+------------------|-----------|-----------|-----------|
+
+ 
+Statistics for All Table Factors
+
+
+Pearson's Chi-squared test 
+------------------------------------------------------------
+Chi^2 =  11.40042     d.f. =  2     p =  0.003345269 
+
+
+ 
+       Minimum expected frequency: 82.79625 </code></pre>
+</div>
+</div>
+</section>
+<section id="interpretación-de-la-prueba-de-chi-cuadrado-χ2" class="level3">
+<h3 class="anchored" data-anchor-id="interpretación-de-la-prueba-de-chi-cuadrado-χ2">Interpretación de la Prueba de Chi-Cuadrado (χ2)</h3>
+<p>La prueba de χ2 nos permite verificar la hipótesis nula de que no hay asociación entre las variables <code>type</code> y <code>sex</code>. Ahora, es muy importante comprender cómo se interpreta y reporta usando un estilo de escritura académica. Primero, debemos entender que si el valor <em>p</em> es lo suficientemente pequeño (por convención, <em>p</em> &lt; .05; <em>p</em> &lt; .01; <em>p</em> &lt; .001), se rechaza la hipótesis nula. Bajo ese escenario, para nuestro ejemplo, esto indicaría que el género de los estudiantes está asociado con el tipo de establecimiento en el que estudian. Segundo, para reportar en un informe es posible formularlo así:</p>
+<p>“Existe una asociación estadísticamente significativa entre el género de los estudiantes y la dependencia administrativa del establecimiento en el que estudian (<em>χ2</em>(2) = 11.40, <em>p</em> &lt; .01).”</p>
+<p>Notar que en el paréntesis reportamos el valor del estadístico <em>χ2</em>, seguido por los grados de libertad y el valor <em>p</em>.</p>
+</section>
+<section id="prueba-u-de-mann-whitney" class="level3">
+<h3 class="anchored" data-anchor-id="prueba-u-de-mann-whitney">Prueba U de Mann-Whitney</h3>
+<p>La prueba U de Mann-Whitney es una prueba no paramétrica que se utiliza para comparar las diferencias entre dos grupos independientes cuando la variable de interés no sigue una distribución normal. En este caso, se usará para comparar el estatus socioeconómico (estatus socioeconómico) entre niños y niñas.</p>
+<ul>
+<li>Primero, aseguramos que las variables de interés están en formato numérico, lo cual es necesario para realizar la prueba.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>pisa2009_chl<span class="sc">$</span>ses <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(pisa2009_chl<span class="sc">$</span>ses)  <span class="co"># Convierte estatus socioeconómico a numérico</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>pisa2009_chl<span class="sc">$</span>sex <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(pisa2009_chl<span class="sc">$</span>sex)  <span class="co"># Convierte sexo a numérico</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><strong>Cálculo de Estadísticos Descriptivos</strong>: Obtenemos estadísticas básicas como la media, desviación estándar y varianza del estatus socioeconómico (estatus socioeconómico) para entender mejor la distribución de la variable.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estadísticos básicos</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pisa2009_chl<span class="sc">$</span>ses)  <span class="co"># Resumen descriptivo de estatus socioeconómico</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+-4.2451 -1.3480 -0.5661 -0.5056  0.3615  2.8814      89 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(pisa2009_chl<span class="sc">$</span>ses, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)  <span class="co"># Desviación estándar de estatus socioeconómico</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.164141</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(pisa2009_chl<span class="sc">$</span>ses, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)  <span class="co"># Varianza de estatus socioeconómico</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.355225</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estadísticos descriptivos más detallados utilizando el paquete 'psych'</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(pisa2009_chl<span class="sc">$</span>ses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   vars    n  mean   sd median trimmed  mad   min  max range skew kurtosis   se
+X1    1 5580 -0.51 1.16  -0.57   -0.51 1.25 -4.25 2.88  7.13 0.05    -0.57 0.02</code></pre>
+</div>
+</div>
+<ul>
+<li>Además, calculamos estadísticas descriptivas del estatus socioeconómico por grupo de género.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">by</span>(pisa2009_chl<span class="sc">$</span>ses, pisa2009_chl<span class="sc">$</span>sex, summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>pisa2009_chl$sex: 0
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+-4.2451 -1.3322 -0.5777 -0.5075  0.3305  2.5794      46 
+------------------------------------------------------------ 
+pisa2009_chl$sex: 1
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+-3.8669 -1.3640 -0.5610 -0.5036  0.3837  2.8814      43 </code></pre>
+</div>
+</div>
+<ul>
+<li><strong>Visualización de la Distribución</strong>: para comprender mejor la distribución de los datos, generamos varios tipos de gráficos, incluyendo histogramas, gráficos de densidad y gráficos cuartil-cuartil (Q-Q plot).</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Histograma de estatus socioeconómico</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pisa2009_chl, <span class="fu">aes</span>(<span class="at">x =</span> ses)) <span class="sc">+</span></span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 89 rows containing non-finite outside the scale range
+(`stat_bin()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Taller-2_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de Densidad de estatus socioeconómico</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pisa2009_chl, <span class="fu">aes</span>(<span class="at">x =</span> ses)) <span class="sc">+</span></span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 89 rows containing non-finite outside the scale range
+(`stat_density()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Taller-2_files/figure-html/unnamed-chunk-13-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Histograma y Densidad combinados</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pisa2009_chl, <span class="fu">aes</span>(<span class="at">x =</span> ses)) <span class="sc">+</span></span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..)) <span class="sc">+</span></span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: The dot-dot notation (`..density..`) was deprecated in ggplot2 3.4.0.
+ℹ Please use `after_stat(density)` instead.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 89 rows containing non-finite outside the scale range
+(`stat_bin()`).</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 89 rows containing non-finite outside the scale range
+(`stat_density()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Taller-2_files/figure-html/unnamed-chunk-13-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Histograma de la variable 'math' como comparación</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pisa2009_chl, <span class="fu">aes</span>(<span class="at">x =</span> math)) <span class="sc">+</span></span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Taller-2_files/figure-html/unnamed-chunk-13-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>El gráfico cuartil-cuartil (Q-Q plot) nos ayuda a visualizar si la distribución del estatus socioeconómico sigue una distribución normal. Si los puntos en el gráfico se distribuyen aproximadamente a lo largo de una línea diagonal, entonces se puede concluir que la variable se distribuye normalmente.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico cuartil-cuartil (Q-Q plot) para estatus socioeconómico</span></span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(pisa2009_chl<span class="sc">$</span>ses, <span class="at">main =</span> <span class="st">'Gráfico Cuartil-Cuartil'</span>)</span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a><span class="fu">qqline</span>(pisa2009_chl<span class="sc">$</span>ses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Taller-2_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="prueba-de-normalidad-shapiro-wilk" class="level3">
+<h3 class="anchored" data-anchor-id="prueba-de-normalidad-shapiro-wilk">Prueba de Normalidad Shapiro-Wilk</h3>
+<p>La prueba de Shapiro-Wilk evalúa formalmente si una muestra sigue una distribución normal. Esto es importante para determinar si es apropiado usar pruebas paramétricas o si es necesario utilizar alternativas no paramétricas como la Prueba U de Mann-Whitney.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Prueba de normalidad Shapiro-Wilk para los primeros 5000 casos de estatus socioeconómico</span></span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(pisa2009_chl<span class="sc">$</span>ses[<span class="dv">0</span><span class="sc">:</span><span class="dv">5000</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Shapiro-Wilk normality test
+
+data:  pisa2009_chl$ses[0:5000]
+W = 0.99139, p-value &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>Si el valor <em>p</em> de esta prueba es menor que 0.05, se rechaza la hipótesis nula de normalidad, sugiriendo que los datos no siguen una distribución normal.</p>
+<section id="estimación-de-la-prueba-u-de-mann-whitney" class="level4">
+<h4 class="anchored" data-anchor-id="estimación-de-la-prueba-u-de-mann-whitney">Estimación de la Prueba U de Mann-Whitney</h4>
+<p>Finalmente, realizamos la Prueba U de Mann-Whitney para comparar el estatus socioeconómico entre niños y niñas bajo la siguiente pregunta de investigación: ¿Difieren significativamente los niños de las niñas en su estatus socioeconómico? Y establecemos las siguientes hipótesis estadísticas:</p>
+<ul>
+<li><strong>Hipótesis nula (H0)</strong>: No hay diferencia significativa en el estatus socioeconómico entre niños y niñas.</li>
+<li><strong>Hipótesis alternativa (H1)</strong>: Hay una diferencia significativa en el estatus socioeconómico entre niños y niñas.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>prueba_u <span class="ot">&lt;-</span> <span class="fu">wilcox.test</span>(pisa2009_chl<span class="sc">$</span>ses, pisa2009_chl<span class="sc">$</span>sex, <span class="at">paired =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>prueba_u</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Wilcoxon rank sum test with continuity correction
+
+data:  pisa2009_chl$ses and pisa2009_chl$sex
+W = 7311835, p-value &lt; 2.2e-16
+alternative hypothesis: true location shift is not equal to 0</code></pre>
+</div>
+</div>
+<ul>
+<li><strong>Interpretación de los Resultados</strong>: Interpretamos los resultados de la prueba U de Mann-Whitney, donde el valor de <em>p</em> indica si podemos rechazar la hipótesis nula de que no hay diferencias significativas entre los grupos.
+<ul>
+<li>Si el valor de p es lo suficientemente pequeño (<em>p</em> &lt; .05), se rechaza la hipótesis nula.</li>
+<li>Esto indicaría que el estatus socio-económico de los estudiantes difiere significativamente entre niños y niñas.</li>
+<li><strong>Reporte de Resultados</strong>: Los niños (Mdn = 1230) presentan significativamente menor estatus socioeconómico que las niñas (Me = 1245, W = 7311835, <em>p</em> &lt; .001).</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="prueba-h-de-kruskal-wallis" class="level3">
+<h3 class="anchored" data-anchor-id="prueba-h-de-kruskal-wallis">Prueba <em>H</em> de Kruskal-Wallis</h3>
+<p>La prueba <em>H</em> de Kruskal-Wallis es una prueba no paramétrica utilizada para comparar más de dos grupos independientes. Es una alternativa a ANOVA cuando no se cumple el supuesto de normalidad. En esta sección, la prueba se usará para evaluar si el estatus socioeconómico de los estudiantes difiere según el tipo de establecimiento al que asisten.</p>
+<ul>
+<li>Primero, calculamos estadísticas descriptivas básicas del SES por cada tipo de establecimiento (type) para tener una idea preliminar de las diferencias entre los grupos.</li>
+<li>Esta línea de código genera resúmenes estadísticos (como la media y la mediana) del SES para cada categoría del tipo de establecimiento, lo que ayuda a identificar posibles diferencias preliminares entre los grupos.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">by</span>(pisa2009_chl<span class="sc">$</span>ses, pisa2009_chl<span class="sc">$</span>type, summary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>pisa2009_chl$type: 1
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+-4.2451 -1.7429 -0.9930 -0.9692 -0.2808  2.5002      44 
+------------------------------------------------------------ 
+pisa2009_chl$type: 2
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+-3.8251 -1.1924 -0.5442 -0.5269  0.1935  2.0778      39 
+------------------------------------------------------------ 
+pisa2009_chl$type: 3
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+-1.6254  0.1753  0.7010  0.6071  1.1056  1.8849       1 </code></pre>
+</div>
+</div>
+<ul>
+<li><strong>Formulación de la Pregunta de Investigación</strong>: la pregunta de investigación que vamos a responder con la prueba H de Kruskal-Wallis es ¿difiere significativamente el estatus socioeconómico de los estudiantes según la dependencia del establecimiento al que asisten?</li>
+<li>Formulamos las hipótesis nula y alternativa:
+<ul>
+<li><strong>H0</strong>: El estatus socio-económico de los estudiantes no difiere significativamente según la dependencia del establecimiento al que asisten.</li>
+<li><strong>H1</strong>: El estatus socio-económico de los estudiantes sí difiere significativamente según la dependencia del establecimiento al que asisten.</li>
+</ul></li>
+</ul>
+<section id="estimación-de-la-prueba-h-de-kruskal-wallis" class="level4">
+<h4 class="anchored" data-anchor-id="estimación-de-la-prueba-h-de-kruskal-wallis">Estimación de la Prueba <em>H</em> de Kruskal-Wallis</h4>
+<p>Realizamos la prueba <em>H</em> de Kruskal-Wallis para determinar si hay diferencias significativas en el estatus socioeconómico de los estudiantes según el tipo de establecimiento. Esta línea de código evalúa si las distribuciones del estatus socioeocnómico son diferentes entre los grupos definidos por la variable <code>type</code> (tipo de establecimiento).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kruskal.test</span>(pisa2009_chl<span class="sc">$</span>ses <span class="sc">~</span> pisa2009_chl<span class="sc">$</span>type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Kruskal-Wallis rank sum test
+
+data:  pisa2009_chl$ses by pisa2009_chl$type
+Kruskal-Wallis chi-squared = 422.54, df = 2, p-value &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<ul>
+<li><strong>Interpretación de los Resultados</strong>: interpretamos el estadístico <em>H</em> y su valor de <em>p</em> resultante para determinar si podemos rechazar la hipótesis nula. Si el valor de <em>p</em> es lo suficientemente pequeño (<em>p</em> &lt; .05), se rechaza la hipótesis nula. Esto indicaría que existen diferencias significativas en el estatus socioeconómico de los estudiantes según la dependencia del establecimiento.</li>
+<li><strong>Reporte de resultados</strong>: El estatus socioeconómico de los estudiantes difiere según la dependencia del establecimiento al que asisten (<em>H</em>(2) = 422.54, <em>p</em> &lt; .001).</li>
+</ul>
+</section>
+</section>
+<section id="correlación-de-spearman-ρ" class="level3">
+<h3 class="anchored" data-anchor-id="correlación-de-spearman-ρ">Correlación de Spearman (ρ)</h3>
+<p>La correlación de Spearman (ρ) es una medida no paramétrica de la asociación lineal entre dos variables ordinales o no normalmente distribuidas. En esta sección, utilizaremos la correlación de Spearman para investigar si existe una asociación significativa entre el estatus socioeconómico de los estudiantes y su puntaje en matemáticas. La pregunta de investigación que abordaremos es: ¿Existe una asociación significativa entre el estatus socio-económico de los estudiantes y su puntaje en matemáticas? Y formulamos las hipótesis nula y alternativa:</p>
+<ul>
+<li><strong>H0</strong>: El estatus socioeconómico de los estudiantes no se asocia a los puntajes de matemáticas.</li>
+<li><strong>H1</strong>: El estatus socioeconómico de los estudiantes sí se asocia a los puntajes de matemáticas.</li>
+</ul>
+<p>Antes de calcular la correlación, es útil visualizar la relación entre el estatus socioeconómico y los puntajes en matemáticas para tener una idea preliminar de la posible asociación. Estos gráficos muestran la relación entre estatus socioeconómico y el puntaje en matemáticas, lo que nos permite observar si existe algún patrón o tendencia entre las dos variables.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualización mediante un diagrama de dispersión (scatter plot)</span></span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(pisa2009_chl<span class="sc">$</span>ses <span class="sc">~</span> pisa2009_chl<span class="sc">$</span>math)  <span class="co"># Muestra un gráfico de correlación básico</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Taller-2_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico más detallado utilizando ggplot2</span></span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pisa2009_chl) <span class="sc">+</span></span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> ses, <span class="at">y =</span> math) <span class="sc">+</span></span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">colour =</span> <span class="st">"#0c4c8a"</span>) <span class="sc">+</span></span>
+<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 89 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Taller-2_files/figure-html/unnamed-chunk-19-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="cálculo-de-la-correlación-de-spearman" class="level4">
+<h4 class="anchored" data-anchor-id="cálculo-de-la-correlación-de-spearman">Cálculo de la Correlación de Spearman</h4>
+<p>A continuación, calculamos el coeficiente de correlación de Spearman para evaluar la fuerza y dirección de la relación entre estatus socioeconómico y el puntaje en matemáticas. Esta línea de código calcula el coeficiente de correlación de Spearman (rho) junto con su valor de <em>p</em>, que indica si la correlación es estadísticamente significativa.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(pisa2009_chl<span class="sc">$</span>ses, pisa2009_chl<span class="sc">$</span>math, <span class="at">method =</span> <span class="st">"spearman"</span>, <span class="at">exact =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Spearman's rank correlation rho
+
+data:  pisa2009_chl$ses and pisa2009_chl$math
+S = 1.6055e+10, p-value &lt; 2.2e-16
+alternative hypothesis: true rho is not equal to 0
+sample estimates:
+     rho 
+0.445567 </code></pre>
+</div>
+</div>
+<ul>
+<li><strong>Interpretación de los Resultados</strong>: Finalmente, interpretamos el coeficiente de correlación y el valor de <em>p</em> para determinar si existe una asociación significativa entre las variables. Si el valor de p es lo suficientemente pequeño (<em>p</em> &lt; .05), se rechaza la hipótesis nula. Esto indica que existe una asociación significativa entre el estatus socio-económico y los puntajes en matemáticas.</li>
+<li><strong>Reporte de resultados</strong>: Existe una asociación significativa y positiva entre el estatus socioeconómico de los estudiantes y su puntaje en matemáticas (<em>ρ</em> = .45, <em>p</em> &lt; .001), siendo una fuerza de asociación moderada.</li>
+<li>En este caso, si el coeficiente de Spearman es positivo y significativo, podemos concluir que a medida que aumenta el estatus socioeconómico de los estudiantes, también tienden a aumentar sus puntajes en matemáticas, y esta asociación es estadísticamente significativa.</li>
+<li>También, interpretamos la magnitud o fuerza de asociación entre ambas variables evaluando el estadístico según los criterios de @cohen2013.
+<ul>
+<li><strong>Correlación pequeña (baja)</strong>: r ≈ 0.10 a r = 0.29.</li>
+<li><strong>Correlación moderada (media)</strong>: r ≈ 0.30 a r = 0.49.</li>
+<li><strong>Correlación alta</strong>: r ≈ 0.50 a r = 1.00.</li>
+</ul></li>
+<li>Estos valores proporcionan una orientación general para interpretar la magnitud de la relación entre dos variables. Es importante tener en cuenta que estos criterios son convenciones y deben interpretarse en el contexto específico del campo de estudio.</li>
+</ul>
+</section>
+</section>
+<section id="prueba-t-de-diferencia-de-medias-para-muestras-independientes" class="level3">
+<h3 class="anchored" data-anchor-id="prueba-t-de-diferencia-de-medias-para-muestras-independientes">Prueba <em>t</em> de Diferencia de Medias para Muestras Independientes</h3>
+<p>La prueba <em>t</em> para muestras independientes se utiliza para comparar las medias de dos grupos independientes, en este caso, el puntaje en matemáticas entre niños y niñas. Primero, obtenemos estadísticas descriptivas básicas del puntaje en matemáticas.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(pisa2009_chl<span class="sc">$</span>math)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  194.7   370.0   421.3   424.8   477.6   782.1 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(pisa2009_chl<span class="sc">$</span>math)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 80.51892</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(pisa2009_chl<span class="sc">$</span>math)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6483.297</code></pre>
+</div>
+</div>
+<ul>
+<li>Utilizamos la función <code>describe()</code> del paquete <code>psych</code> para obtener un análisis descriptivo más detallado.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(pisa2009_chl<span class="sc">$</span>math)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   vars    n   mean    sd median trimmed   mad    min    max  range skew
+X1    1 5669 424.82 80.52 421.26  423.32 79.45 194.74 782.06 587.32 0.17
+   kurtosis   se
+X1    -0.07 1.07</code></pre>
+</div>
+</div>
+<ul>
+<li><strong>Verificación de Supuestos de Normalidad</strong>: antes de realizar la prueba <em>t</em>, verificamos si la variable sigue una distribución normal mediante varios métodos.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Histograma</span></span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pisa2009_chl, <span class="fu">aes</span>(<span class="at">x=</span>math)) <span class="sc">+</span></span>
+<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Taller-2_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico Cuartil-Cuartil (Q-Q plot):</span></span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a><span class="fu">qqnorm</span>(pisa2009_chl<span class="sc">$</span>math, <span class="at">main=</span><span class="st">'Gráfico Cuartil-Cuartil'</span>)</span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a><span class="fu">qqline</span>(pisa2009_chl<span class="sc">$</span>math)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Taller-2_files/figure-html/unnamed-chunk-23-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Prueba de Shapiro-Wilk</span></span>
+<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a><span class="fu">shapiro.test</span>(pisa2009_chl<span class="sc">$</span>math[<span class="dv">0</span><span class="sc">:</span><span class="dv">5000</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Shapiro-Wilk normality test
+
+data:  pisa2009_chl$math[0:5000]
+W = 0.99671, p-value = 4.649e-09</code></pre>
+</div>
+</div>
+<ul>
+<li><strong>Prueba <em>t</em> de Diferencia de Medias</strong>: realizamos la prueba <em>t</em> para determinar si hay diferencias significativas en el puntaje en matemáticas entre niños y niñas.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a>ind.t.test <span class="ot">&lt;-</span> <span class="fu">t.test</span>(pisa2009_chl<span class="sc">$</span>math <span class="sc">~</span> pisa2009_chl<span class="sc">$</span>sex, <span class="at">var.equal =</span> T)</span>
+<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a>ind.t.test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Two Sample t-test
+
+data:  pisa2009_chl$math by pisa2009_chl$sex
+t = 10.605, df = 5667, p-value &lt; 2.2e-16
+alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
+95 percent confidence interval:
+ 18.31179 26.61700
+sample estimates:
+mean in group 0 mean in group 1 
+       435.9121        413.4477 </code></pre>
+</div>
+</div>
+<ul>
+<li>Obtenemos el estadístico de <em>d</em> de Cohen para estimar el tamaño de efecto que refleja la magnitud de esta diferencia de medias expresado en unidades de desviación estándar.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a>d_cohen <span class="ot">&lt;-</span> <span class="fu">cohen.d</span>(pisa2009_chl<span class="sc">$</span>math <span class="sc">~</span> pisa2009_chl<span class="sc">$</span>sex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in cohen.d.formula(pisa2009_chl$math ~ pisa2009_chl$sex): Cohercing rhs
+of formula to factor</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a>d_cohen</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Cohen's d
+
+d estimate: 0.2817253 (small)
+95 percent confidence interval:
+    lower     upper 
+0.2293899 0.3340606 </code></pre>
+</div>
+</div>
+<ul>
+<li>El valor de <em>d</em> de Cohen se interpreta de la siguiente manera:
+<ul>
+<li>d ≈ 0.2: Tamaño de efecto pequeño.</li>
+<li>d ≈ 0.5: Tamaño de efecto mediano.</li>
+<li>d ≈ 0.8: Tamaño de efecto alto.</li>
+</ul></li>
+<li><strong>Reporte de Resultados</strong>: En promedio, las niñas (M = 413.5) obtuvieron un puntaje de matemáticas significativamente menor que los niños (M = 435.9), (<em>t</em>(5660.3) = 10.613, <em>p</em> &lt; .001). Esta diferencia representa un tamaño de efecto de <em>d</em> = 0.282.</li>
+</ul>
+</section>
+<section id="análisis-de-varianza-anova" class="level3">
+<h3 class="anchored" data-anchor-id="análisis-de-varianza-anova">Análisis de Varianza (ANOVA)</h3>
+<p>El análisis de varianza (ANOVA) es una técnica estadística utilizada para comparar las medias de tres o más grupos independientes para determinar si al menos una de las medias es significativamente diferente de las demás. En esta sección, utilizaremos ANOVA para analizar si el puntaje promedio en matemáticas de los estudiantes difiere según la dependencia del establecimiento al que asisten. Antes de realizar el ANOVA, es útil visualizar la variación entre y dentro de los grupos utilizando un diagrama de caja (boxplot). Esto nos permite observar la dispersión de los puntajes en matemáticas para cada tipo de establecimiento.</p>
+<p>La siguiente línea de código genera un gráfico que muestra la distribución de los puntajes en matemáticas para cada tipo de establecimiento (type). Si las cajas se superponen significativamente, podría no haber diferencias claras entre los grupos.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb104"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb104-1"><a href="#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(pisa2009_chl<span class="sc">$</span>math <span class="sc">~</span> pisa2009_chl<span class="sc">$</span>type,</span>
+<span id="cb104-2"><a href="#cb104-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">"Dependencia"</span>, <span class="at">ylab =</span> <span class="st">"Puntaje Pisa Mat"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Taller-2_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>La pregunta de investigación que abordaremos con el ANOVA es la siguiente: dDifiere significativamente el puntaje promedio en matemáticas de los estudiantes según la dependencia del establecimiento al que asisten? Y formulamos las hipótesis nula y alternativa:</p>
+<ul>
+<li><strong>H0</strong>: No hay diferencias significativas en los puntajes promedios de matemáticas entre estudiantes en establecimientos de distintas dependencias.</li>
+<li><strong>H1</strong>: No todos los promedios son iguales.</li>
+</ul>
+<p>Estimamos un modelo ANOVA utilizando la función <code>aov()</code> para determinar si existen diferencias significativas en los puntajes promedios de matemáticas entre los diferentes tipos de establecimientos.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a>res_an <span class="ot">&lt;-</span> <span class="fu">aov</span>(pisa2009_chl<span class="sc">$</span>math <span class="sc">~</span> pisa2009_chl<span class="sc">$</span>type)</span>
+<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(res_an)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                    Df   Sum Sq Mean Sq F value Pr(&gt;F)    
+pisa2009_chl$type    1  1337805 1337805   243.2 &lt;2e-16 ***
+Residuals         4479 24642945    5502                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+1188 observations deleted due to missingness</code></pre>
+</div>
+</div>
+<ul>
+<li>La función <code>aov()</code> calcula el estadístico <em>F</em>, que compara la variabilidad entre las medias de los grupos con la variabilidad dentro de los grupos. El resumen <code>summary(res_an)</code> proporcionará el valor del estadístico <em>F</em> y su significancia.</li>
+<li><strong>Interpretación de los Resultados</strong>: Interpretamos el valor del estadístico <em>F</em> y el valor p para determinar si podemos rechazar la hipótesis nula. Si el valor de p es lo suficientemente pequeño (<em>p</em> &lt; .05), se rechaza la hipótesis nula. Esto indica que existen diferencias significativas en los puntajes promedio de matemáticas entre los diferentes tipos de establecimientos.</li>
+<li><strong>Reporte de Resultados</strong>: El puntaje promedio de los estudiantes en matemáticas difiere según la dependencia del establecimiento al que asisten (<em>F</em>(1, 4479) = 243.2, <em>p</em> &lt; .001).</li>
+<li>En este caso, si el valor <em>p</em> es menor que .05, podemos concluir que al menos uno de los grupos tiene un puntaje promedio en matemáticas significativamente diferente de los otros, lo que sugiere que la dependencia del establecimiento está asociado a los puntajes de los estudiantes.</li>
+</ul>
+</section>
+<section id="correlación-de-pearson-r" class="level3">
+<h3 class="anchored" data-anchor-id="correlación-de-pearson-r">Correlación de Pearson (<em>r</em>)</h3>
+<p>La correlación de Pearson (<em>r</em>) es una medida que evalúa la fuerza y la dirección de la asociación lineal entre dos variables continuas. En esta sección, utilizaremos la correlación de Pearson para investigar si existe una asociación significativa entre los puntajes en matemáticas y los puntajes en lectura de los estudiantes. La pregunta de investigación que abordaremos es la siguiente: ¿existe una asociación significativa entre el puntaje en matemáticas y el puntaje en lectura de los estudiantes? Y formulamos las hipótesis nula y alternativa:</p>
+<ul>
+<li><strong>H0</strong>: Los puntajes en lectura de los estudiantes no se asocian significativamente a los puntajes de matemáticas.</li>
+<li><strong>H1</strong>: Los puntajes en lectura de los estudiantes sí se asocian significativamente a los puntajes de matemáticas.</li>
+</ul>
+<p>Antes de calcular la correlación de Pearson, es útil visualizar la relación entre las dos variables para observar si existe una relación de forma lineal.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(pisa2009_chl<span class="sc">$</span>math <span class="sc">~</span> pisa2009_chl<span class="sc">$</span>read)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Taller-2_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico más detallado utilizando ggplot2</span></span>
+<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pisa2009_chl) <span class="sc">+</span></span>
+<span id="cb108-3"><a href="#cb108-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> math, <span class="at">y =</span> read) <span class="sc">+</span></span>
+<span id="cb108-4"><a href="#cb108-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">colour =</span> <span class="st">"#0c4c8a"</span>) <span class="sc">+</span></span>
+<span id="cb108-5"><a href="#cb108-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Taller-2_files/figure-html/unnamed-chunk-28-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Estos gráficos muestran la relación entre los puntajes en matemáticas y lectura. Si los puntos se alinean en una tendencia lineal (ascendente o descendente), entonces sugiere una correlación entre las dos variables.</li>
+<li>Calculamos una correlación de Pearson para cuantificar la fuerza y la dirección de la relación entre los puntajes en matemáticas y en lectura.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">cor.test</span>(pisa2009_chl<span class="sc">$</span>math, pisa2009_chl<span class="sc">$</span>read, <span class="at">method =</span> <span class="st">"pearson"</span>)</span>
+<span id="cb109-2"><a href="#cb109-2" aria-hidden="true" tabindex="-1"></a>r</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's product-moment correlation
+
+data:  pisa2009_chl$math and pisa2009_chl$read
+t = 111.32, df = 5667, p-value &lt; 2.2e-16
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.8200228 0.8363682
+sample estimates:
+      cor 
+0.8283717 </code></pre>
+</div>
+</div>
+<p>La función <code>cor.test()</code> devuelve el coeficiente de correlación <em>r</em> junto con el valor <em>p</em>, que indica si la correlación es estadísticamente significativa.</p>
+<ul>
+<li><strong>Cálculo del Coeficiente de Determinación</strong> (<em>r²</em>): es una medida que indica qué proporción de la variabilidad en una de las variables se puede explicar por la otra variable.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a>r2 <span class="ot">&lt;-</span> r<span class="sc">$</span>estimate <span class="sc">*</span> r<span class="sc">$</span>estimate</span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>r2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      cor 
+0.6861997 </code></pre>
+</div>
+</div>
+<ul>
+<li>El <em>r²</em> proporciona una interpretación adicional de la correlación, indicando la proporción de la variabilidad compartida entre las dos variables. Si lo multiplicas por 100, entonces puedes interpretarlo como un porcentaje.</li>
+<li><strong>Interpretación de los Resultados</strong>: interpretamos el coeficiente de correlación y el valor <em>p</em> para determinar si existe una asociación significativa entre las variables. Si el valor <em>p</em> es lo suficientemente pequeño (<em>p</em> &lt; .05), se rechaza la hipótesis nula. Esto indica que existe una asociación significativa entre los puntajes en matemáticas y lectura.</li>
+<li><strong>Reporte de Resultados</strong>: Existe una asociación significativa, positiva y alta entre los puntajes de lectura y los puntajes en matemáticas (<em>r</em> = .83, <em>p</em> &lt; .001). Los puntajes en matemáticas explican un 69% de los puntajes en lenguaje.</li>
+<li>En este caso, si el valor <em>r</em> es positivo y significativo, podemos concluir que a medida que los puntajes en lectura aumentan, también a aumentan los puntajes en matemáticas, y esta asociación es estadísticamente significativa.</li>
+<li><em>r²</em> nos indica que aproximadamente el 69% de la variabilidad en los puntajes en lectura puede explicarse por los puntajes en matemáticas.</li>
+</ul>
+<section id="generación-de-una-tabla-de-correlación-para-múltiples-variables" class="level4">
+<h4 class="anchored" data-anchor-id="generación-de-una-tabla-de-correlación-para-múltiples-variables">Generación de una Tabla de Correlación para Múltiples Variables</h4>
+<p>Si deseas observar las correlaciones entre múltiples variables, puedes generar una tabla de correlación. Esta línea de código gener una tabla y muestra las correlaciones entre las variables seleccionadas, lo que puede ser útil para explorar relaciones adicionales en los datos.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">cor</span>(pisa2009_chl[, <span class="dv">7</span><span class="sc">:</span><span class="dv">9</span>]), <span class="at">digits =</span> <span class="dv">2</span>)  <span class="co"># Redondea a dos decimales</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     math read scie
+math 1.00 0.83 0.86
+read 0.83 1.00 0.84
+scie 0.86 0.84 1.00</code></pre>
+</div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

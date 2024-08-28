@@ -1,0 +1,226 @@
+---
+title: "Taller 3b"
+format: html
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+![](logo-ie-ciae.gif){fig-align="left" width="200"}
+
+# Análisis de Regresión Logística 📈
+
+En esta sesión, aprenderás a realizar un análisis de regresión logística utilizando datos de matrícula de educación superior de los años 2021 y 2022. La regresión logística es una técnica estadística utilizada para modelar la probabilidad de ocurrencia de un evento binario, como la deserción de estudiantes, en función de una o más variables independientes. Exploraremos cómo preparar los datos, ajustar el modelo, evaluar los supuestos, interpretar los resultados y visualizar las relaciones entre las variables.
+
+Comencemos estableciendo el directorio de trabajo.
+
+```{r}
+getwd() # Verifica el directorio de trabajo actual
+setwd("G:/Mi unidad/Teaching/Metodología Cuantitativa II 2024/Sesión 3") # Cambia esta línea de código por tu directorio de trabajo
+```
+
+## Instalar y Cargar Paquetes
+
+Instalemos y carguemos los paquetes que utilizaremos en esta sesión usando el paquete `pacman`.
+
+```{r}
+if(!require(pacman)) install.packages("pacman")
+pacman::p_load(tidyverse, # tidyverse es en realidad una colección de paquetes muy popular, que incluye ggplot2, dplyr, etc
+               corrplot,
+               GGally,
+               lmtest,
+               DescTools,
+               car,
+               reshape2,
+               tidymodels,
+               knitr)
+```
+
+## Importar Datos
+
+Importamos los datos de matrícula de educación superior para los años 2021 y 2022. Luego, seleccionamos la cohorte de estudiantes que ingresaron en 2021 para estudiar la deserción en su primer año.
+
+```{r}
+# Importar los datos de matrícula para 2021 y 2022
+mat2021 <- read.csv(file = "20230802_Matrícula_Ed_Superior_2021_PUBL_MRUN.csv", header = TRUE, sep = ";") 
+mat2022 <- read.csv(file = "20230802_Matrícula_Ed_Superior_2022_PUBL_MRUN.csv", header = TRUE, sep = ";")
+```
+
+## Selección y manipulación
+
+Parte importante del análisis de datos es la creación, transformación, limpieza y recodificación de datos para los propósitos que se busca. Aprendamos un poco acerca de aquellos con este trozo de código donde seleccionamos casos según cohorte y crearemos una nueva variable dependiente dicotómica que nos señalará deserción universitaria en base a estos dos conjuntos de datos de `mat2021` y `mat2022`.
+
+```{r}
+# Selección de casos: Cohorte que ingresó en 2021
+mat2021_1anio <- mat2021[which(mat2021$anio_ing_carr_ori == "2021"),]
+mat2022_2anio <- mat2022[which(mat2022$anio_ing_carr_ori == "2021"),]
+
+# Generación de variable dependiente: Indicador de Deserción
+mat2021_1anio$deserta <- ifelse(mat2021_1anio$mrun %in% mat2022_2anio$mrun, "0", "1")
+mat2021_1anio$deserta <- as.numeric(mat2021_1anio$deserta)
+
+# Seleccionamos solo a estudiantes de pregrado
+mat2021_1anio <- mat2021_1anio[which(mat2021_1anio$nivel_global == "Pregrado"),]
+
+# Exploración de los datos
+head(mat2021_1anio)
+dim(mat2021_1anio)
+str(mat2021_1anio)
+
+# Recodificación de la variable género
+mat2021_1anio$female <- as.numeric(mat2021_1anio$gen_alu)
+mat2021_1anio$female[mat2021_1anio$female == "1"] <- 0
+mat2021_1anio$female[mat2021_1anio$female == "2"] <- 1
+
+# Cálculo de la edad al ingreso en la educación superior
+mat2021_1anio$anio_nac <- as.numeric(str_sub(mat2021_1anio$fec_nac_alu, 1, 4)) 
+mat2021_1anio$anio_ing_carr_ori <- as.numeric(mat2021_1anio$anio_ing_carr_ori)
+mat2021_1anio$edad_alu <- mat2021_1anio$anio_ing_carr_ori - mat2021_1anio$anio_nac
+
+# Filtramos datos erróneos de edad
+summary(mat2021_1anio$edad_alu)
+mat2021_1anio <- mat2021_1anio[!(mat2021_1anio$edad_alu == 121),]
+summary(mat2021_1anio$edad_alu)
+
+# Filtrar para eliminar NA's presentes en predictores para conformar la muestra analítica de interés
+mat2021_1anio <- filter(mat2021_1anio, !is.na(female) & !is.na(edad_alu) & !is.na(dur_total_carr) & !is.na(valor_arancel))
+
+# Removamos los data frames que no utilizaremos para liberar espacio de memoria RAM
+rm(mat2021, mat2022, mat2022_2anio)
+```
+
+## Visualización de la Variable Dependiente
+Visualizamos la distribución de la variable dependiente `deserta` utilizando un gráfico de barras.
+
+```{r}
+ggplot(data = mat2021_1anio, aes(deserta, fill = deserta)) +
+  geom_bar(position = "dodge") +
+  ggtitle("Deserción") +
+  ylab("Cantidad") + 
+  scale_fill_manual(values = c("#87ceeb", "#ffd700")) +
+  theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  theme(legend.position = 'top')
+```
+
+## Análisis de Regresión Logística
+Ajustamos un modelo de regresión logística para predecir la deserción (`deserta`) en función de las variables `female` (género) y `edad_alu` (edad al ingreso).
+
+```{r}
+m2 <- glm(deserta ~ female + edad_alu, family = binomial(logit), data = mat2021_1anio)
+summary(m2)
+```
+
+### Evaluación de los Supuestos de la Regresión Logística
+Es importante verificar que los supuestos de la regresión logística se cumplen para garantizar la validez de las estimaciones del modelo.
+
+-    **Variable dependiente categórica**: La variable que estamos tratando de predecir (deserta) es binaria, lo que cumple con el primer supuesto.
+-    **Independencia de las observaciones**: Este supuesto no se evalúa estadísticamente, pero es importante asegurarse de que cada observación (estudiante) es independiente de las demás.
+-    **Supuesto de Linealidad**: implica que la relación entre el logit de la variable dependiente y cada variable independiente es lineal. Verificamos este supuesto usando el Test Box-Tidwell. Si el resultado del test es no significativo, no se rechaza la hipótesis nula de linealidad, lo que indica que el supuesto de linealidad se cumple.
+
+```{r}
+logodds <- m2$linear.predictors
+boxTidwell(logodds ~ mat2021_1anio$edad_alu)
+```
+
+-    **Supuesto de Ausencia de Multicolinealidad**: La multicolinealidad ocurre cuando las variables independientes están altamente correlacionadas entre sí. Evaluamos este supuesto utilizando la matriz de correlación y el Factor de Inflación de la Varianza (VIF). Si los valores de VIF son menores a 5, se considera que no hay un problema significativo de multicolinealidad. Si las correlacione son mayores a r > .08, entonces también es un indicador de multicolinealidad.
+
+```{r}
+# Ajustamos un modelo con más variables independientes
+mat2021_1anio$valor_arancel <- as.numeric(mat2021_1anio$valor_arancel)
+m3 <- glm(deserta ~ female + edad_alu + dur_total_carr + valor_arancel, family = binomial(logit), data = mat2021_1anio)
+summary(m3)
+
+# Correlación entre variables independientes continuas
+cormat <- round(cor(mat2021_1anio[, c("edad_alu", "dur_total_carr", "valor_arancel")]), 2)
+melted_cormat <- melt(cormat)
+
+# Visualización de la matriz de correlación
+ggplot(data = melted_cormat, aes(x = Var1, y = Var2, fill = value)) + 
+  geom_tile()
+
+# Calcular VIF
+kable(vif(m3), digits = 2)
+```
+
+Los resultados de estos análisis sugieren que se cumple el supuesto de ausencia de multicolinealidad entre las variables independientes del modelo.
+
+### Resultados de la Regresión Logística
+Interpretamos los resultados del modelo ajustado `m3`, evaluando la significancia de los coeficientes, direccionalidad y tamaño de los coeficientes (Estimates en el output) y calculando las probabilidades estimadas. También, en regresión logística es posible obtener el pseudo R2 que nos muestra la proporción de la varianza explicada de nuestra variable dependiente por el modelo.
+
+```{r}
+summary(m3)
+PseudoR2(m3)
+```
+
+Los coeficientes de regresión logística son el logaritmo natural de los odds (log-odds) de que ocurra el evento de la variable dependiente, que en este caso es desertar o no. La forma más intuitiva de interpretarlos es elevar al cuadrado los exponentes para obtenerlos en razones de odds (odd-ratio), los cuales pueden ser interpretados como la probabilidad de que un evento ocurra respecto a que no ocurra. Calculemos aquello en el siguiente código.
+
+```{r}
+m3$coefficients # coeficientes en log-odds
+exp(m3$coefficients) # coeficientes en odd ratios
+exp(confint(m3))
+```
+
+**Interpretación**: se puede señalar que, por cada unidad que aumenta la edad del estudiante `edad_alu`, entonces la probabilidad de desertar en primer año es del 3%.
+
+### Comparación respecto al modelo nulo
+Al estimar un chi-cuadrado del modelo (`m3`), podemos evaluar si es significativamente mejor que el modelo nulo o vacío (i.e. que contiene solo el intercepto y ningún predictor).
+
+```{r}
+# Cálculo de la chi-cuadrado del modelo
+modelChi <- m3$null.deviance - m3$deviance
+chidf <- m3$df.null - m3$df.residual
+chisq.prob <- 1 - pchisq(modelChi, chidf)
+chisq.prob  # Significancia del modelo
+```
+
+Por ejemplo, en el siguiente código podemos obtener la probabilidad de que una mujer de 19 años, en un programa de 5 semestres de duración y con un arancel de $2.510.000 deserte es de 27%
+
+```{r}
+# Probabilidades estimadas
+mat2021_1anio$Probabilidades_estimadas <- m3$fitted.values
+
+# Mostrar algunas probabilidades estimadas
+kable(mat2021_1anio[c(1:10), c("deserta", "female", "edad_alu", "dur_total_carr", "valor_arancel", "Probabilidades_estimadas")], digits = 2)
+```
+
+La bondad de clasificación es un análisis para evaluar la capacidad predictiva del modelo a nivel de los estudiantes, indicándonos la proporción de estudiantes que han sido clasificados correctamente por el modelo. Como vemos en el siguiente código, la precisión de la predicción es del 73%, lo que indica que nuestro modelo logra una mejora razonable de las predicciones.
+
+```{r}
+probabilities = m3 %>% predict(mat2021_1anio, type = "response")
+head(probabilities)
+predicted = ifelse(probabilities > 0.5, 1, 0)
+mean(predicted == mat2021_1anio$deserta)
+```
+
+### Visualización
+Visualizamos los resultados del modelo de regresión logística ajustado, incluyendo la relación entre las variables independientes y la probabilidad de deserción.
+
+```{r}
+m3_augmented <- augment(m3)
+
+# Relación entre edad al ingreso y deserción
+ggplot(m3_augmented, aes(edad_alu, deserta)) +
+  geom_point(lwd = 3, alpha = .5) +
+  stat_smooth(method = "glm", se = TRUE, method.args = list(family = binomial), color = "royalblue") +
+  theme_bw(base_size = 22) 
+
+# Relación entre duración total de la carrera y deserción
+ggplot(m3_augmented, aes(dur_total_carr, deserta)) +
+  geom_point(lwd = 3, alpha = .5) +
+  stat_smooth(method = "glm", se = TRUE, method.args = list(family = binomial), color = "royalblue") +
+  theme_bw(base_size = 22) 
+
+# Relación entre valor del arancel y deserción
+ggplot(m3_augmented, aes(valor_arancel, deserta)) +
+  geom_point(lwd = 3, alpha = .5) +
+  stat_smooth(method = "glm", se = TRUE, method.args = list(family = binomial), color = "royalblue") +
+  theme_bw(base_size = 22) 
+```
+
+### Comparación de Modelos
+Finalmente, comparamos los modelos `m2` y `m3` para determinar cuál ajusta mejor a los datos. Los resultados indican que el modelo 3 ajusta significativamente mejor a los datos que el modelo 2.
+
+```{r}
+anova(m2, m3)
+```

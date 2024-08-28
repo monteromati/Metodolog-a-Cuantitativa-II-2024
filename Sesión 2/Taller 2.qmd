@@ -1,0 +1,435 @@
+---
+title: "Taller 2"
+format: html
+bibliography: references.bib
+---
+
+![](logo-ie-ciae.gif){fig-align="left" width="200"}
+
+# Análisis Inferencial Bivariado con Datos PISA 2009 🏫
+
+En este taller, nos enfocaremos en realizar análisis inferenciales bivariados utilizando datos de PISA 2009 para Chile. A lo largo de esta sesión, aprenderás a aplicar diversas pruebas estadísticas, como la prueba de Chi-Cuadrado, *U* de Mann-Whitney, la *H* de Kruskal-Wallis, la prueba *t* para muestras independientes, ANOVA, y las correlaciones (*r*) de Spearman y Pearson. Además, explorarás cómo interpretar y reportar los resultados de estas pruebas, apoyándote en visualizaciones gráficas que facilitarán la comprensión de las relaciones entre variables.
+
+## Instalación de Paquetes
+
+Comenzamos instalando los paquetes necesarios para esta sesión. Estos paquetes nos permitirán importar datos en formato SPSS, generar gráficos, calcular pruebas estadísticas como Chi-Cuadrado, y obtener estadísticas descriptivas detalladas.
+
+```{r message=FALSE, warning=FALSE}
+options(repos = c(CRAN = "https://cran.rstudio.com/"))
+
+install.packages("haven")    # Paquete para importar datos en formato SPSS
+install.packages("ggplot2")  # Paquete para generar gráficos
+install.packages("gmodels")  # Paquete que contiene la función CrossTable() para pruebas de Chi-Cuadrado
+install.packages("psych")    # Paquete para obtener estadísticos descriptivos más detallados
+install.packages("pastecs")  # Paquete para análisis estadístico básico
+install.packages("effsize")
+```
+
+## Carga de Bibliotecas
+
+A continuación, cargamos las bibliotecas de los paquetes que acabamos de instalar para hacer uso de sus funciones en el análisis.
+
+```{r message=FALSE, warning=FALSE}
+library(haven)
+library(ggplot2)
+library(gmodels)
+library(psych)
+library(pastecs)
+library(effsize)
+```
+
+## Configuración del Directorio de Trabajo
+
+Es importante definir el directorio de trabajo, que es la ubicación donde se encuentran los datos que vamos a analizar. Primero verificamos el directorio actual y luego lo cambiamos al directorio donde se encuentran los datos.
+
+```{r}
+getwd()  # Verifica el directorio de trabajo actual
+
+# Cambia el directorio de trabajo al lugar donde se guardaron los datos
+setwd("G:/Mi unidad/Teaching/Metodología Cuantitativa II 2024/Sesión 2")
+
+getwd()  # Confirma que el directorio de trabajo ha cambiado
+```
+
+## Importación de Datos
+
+En esta sección, importamos los datos del archivo SPSS (.sav) a R utilizando el paquete `haven`, que convierte automáticamente los datos en un data frame para facilitar su manipulación y análisis.
+
+```{r}
+pisa2009_chl <- read_sav("pisa2009_chl.sav")
+View(pisa2009_chl)  # Visualiza la base de datos en una nueva ventana
+```
+
+## Exploración Inicial de los Datos
+
+Antes de realizar análisis estadísticos, es fundamental entender la estructura y contenido del conjunto de datos. Exploremos entonces brevemente el data frame, observando su clase, los primeros registros, los nombres de las variables, y obteniendo un resumen descriptivo básico.
+
+```{r}
+class(pisa2009_chl)    # Verifica la clase del objeto 'pisa2009_chl'
+head(pisa2009_chl)     # Muestra los primeros 6 casos de la base de datos
+names(pisa2009_chl)    # Lista los nombres de las variables
+dim(pisa2009_chl)      # Muestra el número de variables y casos
+summary(pisa2009_chl)  # Proporciona un resumen estadístico para cada variable
+str(pisa2009_chl)      # Muestra la estructura interna del data frame
+```
+
+## Prueba de Chi-Cuadrado (χ2)
+
+La prueba de Chi-Cuadrado (χ2) es útil para evaluar si existe una asociación estadísticamente significativa entre dos variables categóricas. Así, inferimos estadísticamente si dicha asociación existe en la población objetivo bajo un nivel de confianza (habitualmente con un 95%). En esta sección, analizaremos la relación entre el género de los estudiantes y el tipo de establecimiento en el que estudian.
+
+### Análisis Descriptivo para Variables Categóricas
+
+Primero, generamos tablas de contingencia que muestran la distribución de las variables categóricas de interés. Estas tablas permiten observar la frecuencia y proporción de cada categoría, tanto de manera individual como cruzada entre dos variables.
+
+```{r}
+# Tabla de contingencia para una variable categórica
+table(pisa2009_chl$sex)  # Distribución de género
+table(pisa2009_chl$type) # Distribución por tipo de establecimiento
+
+# Tabla de contingencia para dos variables categóricas
+table(pisa2009_chl$type, pisa2009_chl$sex)  # Distribución conjunta de género y tipo de establecimiento
+
+# Tabla de porcentajes para variables categóricas por grupo de interés
+# "margin = 2" entrega las proporciones de la distribución condicional de la variable 1 según la variable 2
+prop.table(table(pisa2009_chl$type, pisa2009_chl$sex), margin = 2)
+```
+
+### Visualización de Variables Categóricas
+
+Para visualizar la distribución de las variables categóricas, generamos gráficos de barras y gráficos circulares.
+
+```{r}
+# Gráfico de Barras para la variable 'sex'
+plot <- as.data.frame(table(pisa2009_chl$sex))
+ggplot(plot, aes(x = Var1, y = Freq)) +
+  geom_bar(stat = "identity")
+
+# Gráfico de Barras para la variable 'type'
+plot <- as.data.frame(table(pisa2009_chl$type))
+ggplot(plot, aes(x = Var1, y = Freq)) +
+  geom_bar(stat = "identity")
+
+# Gráfico Circular para la variable 'sex'
+plot <- as.data.frame(table(pisa2009_chl$sex))
+ggplot(plot, aes(x = "", y = Freq, fill = Var1)) +
+  geom_bar(stat = "identity", color = "white") +
+  coord_polar("y", start = 0) +
+  theme_void()
+
+# Gráfico Circular para la variable 'type'
+plot <- as.data.frame(table(pisa2009_chl$type))
+ggplot(plot, aes(x = "", y = Freq, fill = Var1)) +
+  geom_bar(stat = "identity", color = "white") +
+  coord_polar("y", start = 0) +
+  theme_void()
+```
+
+### Prueba de Chi-Cuadrado usando `CrossTable`
+
+Veamos si existe una asociación entre el género de los estudiantes y el tipo de establecimiento en el que estudian.
+
+```{r}
+# Generación de la tabla de contingencia con la función CrossTable
+tabla <- CrossTable(pisa2009_chl$type, pisa2009_chl$sex, prop.chisq = FALSE)
+
+# Guardamos las proporciones por columna
+propcol <- tabla$prop.col
+
+# Gráfico de Barras Condicional: Visualización de las proporciones condicionales
+barplot(propcol, beside = TRUE, col = rainbow(3), ylim = c(0, 1))
+legend('topright', c("Public", "Private government-dependent", "Private independent"), pch = 15, col = rainbow(3), cex = 0.7)
+```
+
+En este paso, visualizamos las proporciones condicionales de la variable `type` por cada categoría de la variable `sex` para finalmente estimar un chi-cuadrado usando `CrossTable`.
+
+```{r}
+CrossTable(pisa2009_chl$type, pisa2009_chl$sex, prop.chisq = FALSE, chisq = TRUE, expected = TRUE, sresid = TRUE, format = "SPSS")
+```
+
+### Interpretación de la Prueba de Chi-Cuadrado (χ2)
+
+La prueba de χ2 nos permite verificar la hipótesis nula de que no hay asociación entre las variables `type` y `sex`. Ahora, es muy importante comprender cómo se interpreta y reporta usando un estilo de escritura académica. Primero, debemos entender que si el valor *p* es lo suficientemente pequeño (por convención, *p* \< .05; *p* \< .01; *p* \< .001), se rechaza la hipótesis nula. Bajo ese escenario, para nuestro ejemplo, esto indicaría que el género de los estudiantes está asociado con el tipo de establecimiento en el que estudian. Segundo, para reportar en un informe es posible formularlo así:
+
+"Existe una asociación estadísticamente significativa entre el género de los estudiantes y la dependencia administrativa del establecimiento en el que estudian (*χ2*(2) = 11.40, *p* \< .01)."
+
+Notar que en el paréntesis reportamos el valor del estadístico *χ2*, seguido por los grados de libertad y el valor *p*.
+
+### Prueba U de Mann-Whitney
+
+La prueba U de Mann-Whitney es una prueba no paramétrica que se utiliza para comparar las diferencias entre dos grupos independientes cuando la variable de interés no sigue una distribución normal. En este caso, se usará para comparar el estatus socioeconómico (estatus socioeconómico) entre niños y niñas.
+
+-   Primero, aseguramos que las variables de interés están en formato numérico, lo cual es necesario para realizar la prueba.
+
+```{r}
+pisa2009_chl$ses <- as.numeric(pisa2009_chl$ses)  # Convierte estatus socioeconómico a numérico
+pisa2009_chl$sex <- as.numeric(pisa2009_chl$sex)  # Convierte sexo a numérico
+```
+
+-   **Cálculo de Estadísticos Descriptivos**: Obtenemos estadísticas básicas como la media, desviación estándar y varianza del estatus socioeconómico (estatus socioeconómico) para entender mejor la distribución de la variable.
+
+```{r}
+# Estadísticos básicos
+summary(pisa2009_chl$ses)  # Resumen descriptivo de estatus socioeconómico
+sd(pisa2009_chl$ses, na.rm = TRUE)  # Desviación estándar de estatus socioeconómico
+var(pisa2009_chl$ses, na.rm = TRUE)  # Varianza de estatus socioeconómico
+
+# Estadísticos descriptivos más detallados utilizando el paquete 'psych'
+describe(pisa2009_chl$ses)
+```
+
+-   Además, calculamos estadísticas descriptivas del estatus socioeconómico por grupo de género.
+
+```{r}
+by(pisa2009_chl$ses, pisa2009_chl$sex, summary)
+```
+
+-   **Visualización de la Distribución**: para comprender mejor la distribución de los datos, generamos varios tipos de gráficos, incluyendo histogramas, gráficos de densidad y gráficos cuartil-cuartil (Q-Q plot).
+
+```{r}
+# Histograma de estatus socioeconómico
+ggplot(pisa2009_chl, aes(x = ses)) +
+  geom_histogram()
+
+# Gráfico de Densidad de estatus socioeconómico
+ggplot(pisa2009_chl, aes(x = ses)) +
+  geom_density()
+
+# Histograma y Densidad combinados
+ggplot(pisa2009_chl, aes(x = ses)) +
+  geom_histogram(aes(y = ..density..)) +
+  geom_density()
+
+# Histograma de la variable 'math' como comparación
+ggplot(pisa2009_chl, aes(x = math)) +
+  geom_histogram()
+```
+
+-   El gráfico cuartil-cuartil (Q-Q plot) nos ayuda a visualizar si la distribución del estatus socioeconómico sigue una distribución normal. Si los puntos en el gráfico se distribuyen aproximadamente a lo largo de una línea diagonal, entonces se puede concluir que la variable se distribuye normalmente.
+
+```{r}
+# Gráfico cuartil-cuartil (Q-Q plot) para estatus socioeconómico
+qqnorm(pisa2009_chl$ses, main = 'Gráfico Cuartil-Cuartil')
+qqline(pisa2009_chl$ses)
+```
+
+### Prueba de Normalidad Shapiro-Wilk
+
+La prueba de Shapiro-Wilk evalúa formalmente si una muestra sigue una distribución normal. Esto es importante para determinar si es apropiado usar pruebas paramétricas o si es necesario utilizar alternativas no paramétricas como la Prueba U de Mann-Whitney.
+
+```{r}
+# Prueba de normalidad Shapiro-Wilk para los primeros 5000 casos de estatus socioeconómico
+shapiro.test(pisa2009_chl$ses[0:5000])
+```
+
+Si el valor *p* de esta prueba es menor que 0.05, se rechaza la hipótesis nula de normalidad, sugiriendo que los datos no siguen una distribución normal.
+
+#### Estimación de la Prueba U de Mann-Whitney
+
+Finalmente, realizamos la Prueba U de Mann-Whitney para comparar el estatus socioeconómico entre niños y niñas bajo la siguiente pregunta de investigación: ¿Difieren significativamente los niños de las niñas en su estatus socioeconómico? Y establecemos las siguientes hipótesis estadísticas:
+
+-   **Hipótesis nula (H0)**: No hay diferencia significativa en el estatus socioeconómico entre niños y niñas.
+-   **Hipótesis alternativa (H1)**: Hay una diferencia significativa en el estatus socioeconómico entre niños y niñas.
+
+```{r}
+prueba_u <- wilcox.test(pisa2009_chl$ses, pisa2009_chl$sex, paired = FALSE)
+prueba_u
+```
+
+-   **Interpretación de los Resultados**: Interpretamos los resultados de la prueba U de Mann-Whitney, donde el valor de *p* indica si podemos rechazar la hipótesis nula de que no hay diferencias significativas entre los grupos.
+    -   Si el valor de p es lo suficientemente pequeño (*p* \< .05), se rechaza la hipótesis nula.
+    -   Esto indicaría que el estatus socio-económico de los estudiantes difiere significativamente entre niños y niñas.
+    -   **Reporte de Resultados**: Los niños (Mdn = 1230) presentan significativamente menor estatus socioeconómico que las niñas (Me = 1245, W = 7311835, *p* \< .001).
+
+### Prueba *H* de Kruskal-Wallis
+
+La prueba *H* de Kruskal-Wallis es una prueba no paramétrica utilizada para comparar más de dos grupos independientes. Es una alternativa a ANOVA cuando no se cumple el supuesto de normalidad. En esta sección, la prueba se usará para evaluar si el estatus socioeconómico de los estudiantes difiere según el tipo de establecimiento al que asisten.
+
+-   Primero, calculamos estadísticas descriptivas básicas del SES por cada tipo de establecimiento (type) para tener una idea preliminar de las diferencias entre los grupos.
+-   Esta línea de código genera resúmenes estadísticos (como la media y la mediana) del SES para cada categoría del tipo de establecimiento, lo que ayuda a identificar posibles diferencias preliminares entre los grupos.
+
+```{r}
+by(pisa2009_chl$ses, pisa2009_chl$type, summary)
+```
+
+-   **Formulación de la Pregunta de Investigación**: la pregunta de investigación que vamos a responder con la prueba H de Kruskal-Wallis es ¿difiere significativamente el estatus socioeconómico de los estudiantes según la dependencia del establecimiento al que asisten?
+-   Formulamos las hipótesis nula y alternativa:
+    -   **H0**: El estatus socio-económico de los estudiantes no difiere significativamente según la dependencia del establecimiento al que asisten.
+    -   **H1**: El estatus socio-económico de los estudiantes sí difiere significativamente según la dependencia del establecimiento al que asisten.
+
+#### Estimación de la Prueba *H* de Kruskal-Wallis
+
+Realizamos la prueba *H* de Kruskal-Wallis para determinar si hay diferencias significativas en el estatus socioeconómico de los estudiantes según el tipo de establecimiento. Esta línea de código evalúa si las distribuciones del estatus socioeocnómico son diferentes entre los grupos definidos por la variable `type` (tipo de establecimiento).
+
+```{r}
+kruskal.test(pisa2009_chl$ses ~ pisa2009_chl$type)
+```
+
+-   **Interpretación de los Resultados**: interpretamos el estadístico *H* y su valor de *p* resultante para determinar si podemos rechazar la hipótesis nula. Si el valor de *p* es lo suficientemente pequeño (*p* \< .05), se rechaza la hipótesis nula. Esto indicaría que existen diferencias significativas en el estatus socioeconómico de los estudiantes según la dependencia del establecimiento.
+-   **Reporte de resultados**: El estatus socioeconómico de los estudiantes difiere según la dependencia del establecimiento al que asisten (*H*(2) = 422.54, *p* \< .001).
+
+### Correlación de Spearman (ρ)
+
+La correlación de Spearman (ρ) es una medida no paramétrica de la asociación lineal entre dos variables ordinales o no normalmente distribuidas. En esta sección, utilizaremos la correlación de Spearman para investigar si existe una asociación significativa entre el estatus socioeconómico de los estudiantes y su puntaje en matemáticas. La pregunta de investigación que abordaremos es: ¿Existe una asociación significativa entre el estatus socio-económico de los estudiantes y su puntaje en matemáticas? Y formulamos las hipótesis nula y alternativa:
+
+-   **H0**: El estatus socioeconómico de los estudiantes no se asocia a los puntajes de matemáticas.
+-   **H1**: El estatus socioeconómico de los estudiantes sí se asocia a los puntajes de matemáticas.
+
+Antes de calcular la correlación, es útil visualizar la relación entre el estatus socioeconómico y los puntajes en matemáticas para tener una idea preliminar de la posible asociación. Estos gráficos muestran la relación entre estatus socioeconómico y el puntaje en matemáticas, lo que nos permite observar si existe algún patrón o tendencia entre las dos variables.
+
+```{r}
+# Visualización mediante un diagrama de dispersión (scatter plot)
+pairs(pisa2009_chl$ses ~ pisa2009_chl$math)  # Muestra un gráfico de correlación básico
+
+# Gráfico más detallado utilizando ggplot2
+ggplot(pisa2009_chl) +
+  aes(x = ses, y = math) +
+  geom_point(colour = "#0c4c8a") +
+  theme_minimal()
+```
+
+#### Cálculo de la Correlación de Spearman
+
+A continuación, calculamos el coeficiente de correlación de Spearman para evaluar la fuerza y dirección de la relación entre estatus socioeconómico y el puntaje en matemáticas. Esta línea de código calcula el coeficiente de correlación de Spearman (rho) junto con su valor de *p*, que indica si la correlación es estadísticamente significativa.
+
+```{r}
+cor.test(pisa2009_chl$ses, pisa2009_chl$math, method = "spearman", exact = FALSE)
+```
+
+-   **Interpretación de los Resultados**: Finalmente, interpretamos el coeficiente de correlación y el valor de *p* para determinar si existe una asociación significativa entre las variables. Si el valor de p es lo suficientemente pequeño (*p* \< .05), se rechaza la hipótesis nula. Esto indica que existe una asociación significativa entre el estatus socio-económico y los puntajes en matemáticas.
+-   **Reporte de resultados**: Existe una asociación significativa y positiva entre el estatus socioeconómico de los estudiantes y su puntaje en matemáticas (*ρ* = .45, *p* \< .001), siendo una fuerza de asociación moderada.
+-   En este caso, si el coeficiente de Spearman es positivo y significativo, podemos concluir que a medida que aumenta el estatus socioeconómico de los estudiantes, también tienden a aumentar sus puntajes en matemáticas, y esta asociación es estadísticamente significativa.
+-   También, interpretamos la magnitud o fuerza de asociación entre ambas variables evaluando el estadístico según los criterios de \@cohen2013.
+    -   **Correlación pequeña (baja)**: r ≈ 0.10 a r = 0.29.
+    -   **Correlación moderada (media)**: r ≈ 0.30 a r = 0.49.
+    -   **Correlación alta**: r ≈ 0.50 a r = 1.00.
+-   Estos valores proporcionan una orientación general para interpretar la magnitud de la relación entre dos variables. Es importante tener en cuenta que estos criterios son convenciones y deben interpretarse en el contexto específico del campo de estudio.
+
+### Prueba *t* de Diferencia de Medias para Muestras Independientes
+
+La prueba *t* para muestras independientes se utiliza para comparar las medias de dos grupos independientes, en este caso, el puntaje en matemáticas entre niños y niñas. Primero, obtenemos estadísticas descriptivas básicas del puntaje en matemáticas.
+
+```{r}
+summary(pisa2009_chl$math)
+sd(pisa2009_chl$math)
+var(pisa2009_chl$math)
+```
+
+-   Utilizamos la función `describe()` del paquete `psych` para obtener un análisis descriptivo más detallado.
+
+```{r}
+describe(pisa2009_chl$math)
+```
+
+-   **Verificación de Supuestos de Normalidad**: antes de realizar la prueba *t*, verificamos si la variable sigue una distribución normal mediante varios métodos.
+
+```{r}
+# Histograma
+ggplot(pisa2009_chl, aes(x=math)) +
+  geom_histogram()
+
+# Gráfico Cuartil-Cuartil (Q-Q plot):
+qqnorm(pisa2009_chl$math, main='Gráfico Cuartil-Cuartil')
+qqline(pisa2009_chl$math)
+
+# Prueba de Shapiro-Wilk
+shapiro.test(pisa2009_chl$math[0:5000])
+```
+
+-   **Prueba *t* de Diferencia de Medias**: realizamos la prueba *t* para determinar si hay diferencias significativas en el puntaje en matemáticas entre niños y niñas.
+
+```{r}
+ind.t.test <- t.test(pisa2009_chl$math ~ pisa2009_chl$sex, var.equal = T)
+ind.t.test
+```
+
+-   Obtenemos el estadístico de *d* de Cohen para estimar el tamaño de efecto que refleja la magnitud de esta diferencia de medias expresado en unidades de desviación estándar.
+
+```{r}
+d_cohen <- cohen.d(pisa2009_chl$math ~ pisa2009_chl$sex)
+d_cohen
+```
+
+-   El valor de *d* de Cohen se interpreta de la siguiente manera:
+    -   d ≈ 0.2: Tamaño de efecto pequeño.
+    -   d ≈ 0.5: Tamaño de efecto mediano.
+    -   d ≈ 0.8: Tamaño de efecto alto.
+-   **Reporte de Resultados**: En promedio, las niñas (M = 413.5) obtuvieron un puntaje de matemáticas significativamente menor que los niños (M = 435.9), (*t*(5660.3) = 10.613, *p* \< .001). Esta diferencia representa un tamaño de efecto de *d* = 0.282.
+
+### Análisis de Varianza (ANOVA)
+
+El análisis de varianza (ANOVA) es una técnica estadística utilizada para comparar las medias de tres o más grupos independientes para determinar si al menos una de las medias es significativamente diferente de las demás. En esta sección, utilizaremos ANOVA para analizar si el puntaje promedio en matemáticas de los estudiantes difiere según la dependencia del establecimiento al que asisten. Antes de realizar el ANOVA, es útil visualizar la variación entre y dentro de los grupos utilizando un diagrama de caja (boxplot). Esto nos permite observar la dispersión de los puntajes en matemáticas para cada tipo de establecimiento.
+
+La siguiente línea de código genera un gráfico que muestra la distribución de los puntajes en matemáticas para cada tipo de establecimiento (type). Si las cajas se superponen significativamente, podría no haber diferencias claras entre los grupos.
+
+```{r}
+boxplot(pisa2009_chl$math ~ pisa2009_chl$type,
+        xlab = "Dependencia", ylab = "Puntaje Pisa Mat")
+```
+
+La pregunta de investigación que abordaremos con el ANOVA es la siguiente: dDifiere significativamente el puntaje promedio en matemáticas de los estudiantes según la dependencia del establecimiento al que asisten? Y formulamos las hipótesis nula y alternativa:
+
+-   **H0**: No hay diferencias significativas en los puntajes promedios de matemáticas entre estudiantes en establecimientos de distintas dependencias.
+-   **H1**: No todos los promedios son iguales.
+
+Estimamos un modelo ANOVA utilizando la función `aov()` para determinar si existen diferencias significativas en los puntajes promedios de matemáticas entre los diferentes tipos de establecimientos.
+
+```{r}
+res_an <- aov(pisa2009_chl$math ~ pisa2009_chl$type)
+summary(res_an)
+```
+
+-   La función `aov()` calcula el estadístico *F*, que compara la variabilidad entre las medias de los grupos con la variabilidad dentro de los grupos. El resumen `summary(res_an)` proporcionará el valor del estadístico *F* y su significancia.
+-   **Interpretación de los Resultados**: Interpretamos el valor del estadístico *F* y el valor p para determinar si podemos rechazar la hipótesis nula. Si el valor de p es lo suficientemente pequeño (*p* \< .05), se rechaza la hipótesis nula. Esto indica que existen diferencias significativas en los puntajes promedio de matemáticas entre los diferentes tipos de establecimientos.
+-   **Reporte de Resultados**: El puntaje promedio de los estudiantes en matemáticas difiere según la dependencia del establecimiento al que asisten (*F*(1, 4479) = 243.2, *p* \< .001).
+-   En este caso, si el valor *p* es menor que .05, podemos concluir que al menos uno de los grupos tiene un puntaje promedio en matemáticas significativamente diferente de los otros, lo que sugiere que la dependencia del establecimiento está asociado a los puntajes de los estudiantes.
+
+### Correlación de Pearson (*r*)
+
+La correlación de Pearson (*r*) es una medida que evalúa la fuerza y la dirección de la asociación lineal entre dos variables continuas. En esta sección, utilizaremos la correlación de Pearson para investigar si existe una asociación significativa entre los puntajes en matemáticas y los puntajes en lectura de los estudiantes. La pregunta de investigación que abordaremos es la siguiente: ¿existe una asociación significativa entre el puntaje en matemáticas y el puntaje en lectura de los estudiantes? Y formulamos las hipótesis nula y alternativa:
+
+-   **H0**: Los puntajes en lectura de los estudiantes no se asocian significativamente a los puntajes de matemáticas.
+-   **H1**: Los puntajes en lectura de los estudiantes sí se asocian significativamente a los puntajes de matemáticas.
+
+Antes de calcular la correlación de Pearson, es útil visualizar la relación entre las dos variables para observar si existe una relación de forma lineal.
+
+```{r}
+pairs(pisa2009_chl$math ~ pisa2009_chl$read)
+
+# Gráfico más detallado utilizando ggplot2
+ggplot(pisa2009_chl) +
+  aes(x = math, y = read) +
+  geom_point(colour = "#0c4c8a") +
+  theme_minimal()
+
+```
+
+-   Estos gráficos muestran la relación entre los puntajes en matemáticas y lectura. Si los puntos se alinean en una tendencia lineal (ascendente o descendente), entonces sugiere una correlación entre las dos variables.
+-   Calculamos una correlación de Pearson para cuantificar la fuerza y la dirección de la relación entre los puntajes en matemáticas y en lectura.
+
+```{r}
+r <- cor.test(pisa2009_chl$math, pisa2009_chl$read, method = "pearson")
+r
+```
+
+La función `cor.test()` devuelve el coeficiente de correlación *r* junto con el valor *p*, que indica si la correlación es estadísticamente significativa.
+
+-   **Cálculo del Coeficiente de Determinación** (*r²*): es una medida que indica qué proporción de la variabilidad en una de las variables se puede explicar por la otra variable.
+
+```{r}
+r2 <- r$estimate * r$estimate
+r2
+```
+
+-   El *r²* proporciona una interpretación adicional de la correlación, indicando la proporción de la variabilidad compartida entre las dos variables. Si lo multiplicas por 100, entonces puedes interpretarlo como un porcentaje.
+-   **Interpretación de los Resultados**: interpretamos el coeficiente de correlación y el valor *p* para determinar si existe una asociación significativa entre las variables. Si el valor *p* es lo suficientemente pequeño (*p* \< .05), se rechaza la hipótesis nula. Esto indica que existe una asociación significativa entre los puntajes en matemáticas y lectura.
+-   **Reporte de Resultados**: Existe una asociación significativa, positiva y alta entre los puntajes de lectura y los puntajes en matemáticas (*r* = .83, *p* \< .001). Los puntajes en matemáticas explican un 69% de los puntajes en lenguaje.
+-   En este caso, si el valor *r* es positivo y significativo, podemos concluir que a medida que los puntajes en lectura aumentan, también a aumentan los puntajes en matemáticas, y esta asociación es estadísticamente significativa.
+-   *r²* nos indica que aproximadamente el 69% de la variabilidad en los puntajes en lectura puede explicarse por los puntajes en matemáticas.
+
+#### Generación de una Tabla de Correlación para Múltiples Variables
+
+Si deseas observar las correlaciones entre múltiples variables, puedes generar una tabla de correlación. Esta línea de código gener una tabla y muestra las correlaciones entre las variables seleccionadas, lo que puede ser útil para explorar relaciones adicionales en los datos.
+
+```{r}
+round(cor(pisa2009_chl[, 7:9]), digits = 2)  # Redondea a dos decimales
+```
